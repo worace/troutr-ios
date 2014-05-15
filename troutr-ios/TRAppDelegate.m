@@ -7,15 +7,22 @@
 //
 
 #import "TRAppDelegate.h"
+#import "TRHomeViewController.h"
+#import "TRCatchLog.h"
 
 @implementation TRAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+    
+    TRHomeViewController *homeVC = [[TRHomeViewController alloc] init];
+    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:homeVC];
+    self.window.rootViewController = navVC;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    NSLog(@"there are %d", [[TRCatchLog sharedStore].allCatches count]);
     return YES;
 }
 
@@ -27,8 +34,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [[TRCatchLog sharedStore] saveChanges];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

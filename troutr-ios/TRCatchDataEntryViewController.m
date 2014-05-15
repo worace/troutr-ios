@@ -9,8 +9,9 @@
 #import "TRCatchDataEntryViewController.h"
 #import "TRCatchLog.h"
 #import "TRCatchDetailViewController.h"
+#import "TRFlyPickerTableViewController.h"
 
-@interface TRCatchDataEntryViewController () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>
+@interface TRCatchDataEntryViewController () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, TRFlyPickerDelegate>
 @property (strong, nonatomic) UIPickerView *speciesPicker;
 @property (strong, nonatomic) IBOutlet UITextField *speciesField;
 @property (weak, nonatomic) IBOutlet UIImageView *catchImageView;
@@ -37,11 +38,12 @@
     self.catchImageView.image = self.catchInProgress.image;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)viewWillAppear:(BOOL)animated {
+    NSLog(@"DATA ENTRY WILL APPEAR");
+    [super viewWillAppear:animated];
     [self initSpeciesPicker];
     [self initCatchImageView];
+    [self initFlyField];
 }
 
 #pragma mark - IBActions
@@ -93,4 +95,25 @@
     return YES;
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (textField == self.flyField) {
+        [self.flyField resignFirstResponder];
+        [self presentFlyPicker];
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+#pragma  mark - fly picker
+- (void)flyPickerDidSelectFly:(NSString *)fly fromPicker:(UIViewController *)picker {
+    self.flyField.text = fly;
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)presentFlyPicker {
+    TRFlyPickerTableViewController *flyPickerVC = [[TRFlyPickerTableViewController alloc] init];
+    flyPickerVC.delegate = self;
+    [self presentViewController:flyPickerVC animated:YES completion:nil];
+}
 @end

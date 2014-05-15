@@ -47,6 +47,7 @@
 }
 
 - (BOOL)saveChanges {
+    NSLog(@"saving changes");
     return [NSKeyedArchiver archiveRootObject:self.internalCatchLog toFile:[self itemArchivePath]];
 }
 

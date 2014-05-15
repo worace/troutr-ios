@@ -1,3 +1,4 @@
+
 //
 //  TRImageStore.m
 //  troutr-ios
@@ -48,6 +49,7 @@
 }
 
 - (void)setImage:(UIImage *)image forKey:(NSString *)key {
+    if (!image) { return; }
     self.imageDictionary[key] = image;
     NSString *imagePath = [self imagePathForKey:key];
     NSData *data = UIImageJPEGRepresentation(image, 0.5);

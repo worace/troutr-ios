@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		743A2BE1627246A7A3526ACD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6AA1C161B34FEA9F501A15 /* libPods.a */; settings = {ATTRIBUTES = (Required, ); }; };
+		BB488D8F192442EA00162FFB /* TRImageStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488D8E192442EA00162FFB /* TRImageStoreTest.m */; };
 		BBEEF860192310B0008AA7EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF85F192310B0008AA7EF /* Foundation.framework */; };
 		BBEEF862192310B0008AA7EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF861192310B0008AA7EF /* CoreGraphics.framework */; };
 		BBEEF864192310B0008AA7EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF863192310B0008AA7EF /* UIKit.framework */; };
@@ -19,7 +20,6 @@
 		BBEEF87A192310B0008AA7EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF85F192310B0008AA7EF /* Foundation.framework */; };
 		BBEEF87B192310B0008AA7EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF863192310B0008AA7EF /* UIKit.framework */; };
 		BBEEF883192310B0008AA7EF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BBEEF881192310B0008AA7EF /* InfoPlist.strings */; };
-		BBEEF885192310B0008AA7EF /* troutr_iosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEEF884192310B0008AA7EF /* troutr_iosTests.m */; };
 		BBEEF891192311F7008AA7EF /* TRHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEEF88F192311F7008AA7EF /* TRHomeViewController.m */; };
 		BBEEF894192313A7008AA7EF /* TRHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBEEF893192313A7008AA7EF /* TRHomeViewController.xib */; };
 		BBEEF89819231607008AA7EF /* TRCatchDataEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEEF89619231607008AA7EF /* TRCatchDataEntryViewController.m */; };
@@ -45,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		391FFA74730C4740BEA89384 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		BB488D8E192442EA00162FFB /* TRImageStoreTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRImageStoreTest.m; sourceTree = "<group>"; };
 		BBEEF85C192310B0008AA7EF /* troutr-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "troutr-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBEEF85F192310B0008AA7EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BBEEF861192310B0008AA7EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -60,7 +61,6 @@
 		BBEEF878192310B0008AA7EF /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BBEEF880192310B0008AA7EF /* troutr-iosTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "troutr-iosTests-Info.plist"; sourceTree = "<group>"; };
 		BBEEF882192310B0008AA7EF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		BBEEF884192310B0008AA7EF /* troutr_iosTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = troutr_iosTests.m; sourceTree = "<group>"; };
 		BBEEF88E192311F7008AA7EF /* TRHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRHomeViewController.h; sourceTree = "<group>"; };
 		BBEEF88F192311F7008AA7EF /* TRHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRHomeViewController.m; sourceTree = "<group>"; };
 		BBEEF893192313A7008AA7EF /* TRHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRHomeViewController.xib; sourceTree = "<group>"; };
@@ -177,8 +177,8 @@
 		BBEEF87E192310B0008AA7EF /* troutr-iosTests */ = {
 			isa = PBXGroup;
 			children = (
-				BBEEF884192310B0008AA7EF /* troutr_iosTests.m */,
 				BBEEF87F192310B0008AA7EF /* Supporting Files */,
+				BB488D8E192442EA00162FFB /* TRImageStoreTest.m */,
 			);
 			path = "troutr-iosTests";
 			sourceTree = "<group>";
@@ -356,7 +356,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBEEF885192310B0008AA7EF /* troutr_iosTests.m in Sources */,
+				BB488D8F192442EA00162FFB /* TRImageStoreTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

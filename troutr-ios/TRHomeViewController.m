@@ -26,6 +26,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
+    UIBarButtonItem *addCatchButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(logCatch:)];
+    addCatchButton.image = [UIImage imageNamed:@"troutIcon"];
+    self.navigationItem.rightBarButtonItem = addCatchButton;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {

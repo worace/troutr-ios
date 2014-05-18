@@ -15,16 +15,6 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="MJa-Oq-oZN">
-                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                <state key="normal" title="Log a Catch">
-                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                </state>
-                <connections>
-                    <action selector="logCatch:" destination="-1" eventType="touchUpInside" id="UmF-B1-QU3"/>
-                </connections>
-            </button>
         </tableView>
     </objects>
 </document>

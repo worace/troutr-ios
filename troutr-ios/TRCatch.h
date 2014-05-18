@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSString *fly;
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, strong)CLLocation *location;
+@property (nonatomic, strong)NSDate *dateCreated;
 - (void) setImage:(UIImage *)image;
 - (UIImage *)image;
 @end

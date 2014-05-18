@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TRCatchDetailViewController">
             <connections>
                 <outlet property="catchImage" destination="39g-iy-iAe" id="CEM-ym-iPv"/>
+                <outlet property="dateLabel" destination="nSn-Nj-Yid" id="RF0-5n-B6U"/>
                 <outlet property="flyLabel" destination="RoT-Qw-z0A" id="gxP-tU-P7N"/>
                 <outlet property="locationLabel" destination="y4v-GC-Cy4" id="DIt-l5-KAq"/>
                 <outlet property="speciesLabel" destination="XYc-if-ez3" id="rgY-jW-uAU"/>
@@ -37,6 +38,13 @@
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y4v-GC-Cy4">
                     <rect key="frame" x="20" y="395" width="280" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSn-Nj-Yid">
+                    <rect key="frame" x="20" y="431" width="280" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>

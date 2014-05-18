@@ -80,8 +80,8 @@
 - (void)saveCatchInProgress {
     self.catchInProgress.species = self.speciesField.text;
     self.catchInProgress.fly = self.flyField.text;
-    NSLog(@"setting catch location to: %@", self.locationManager.location);
     self.catchInProgress.location = self.locationManager.location;
+    self.catchInProgress.dateCreated = [NSDate date];
     [[TRCatchLog sharedStore] recordCatch:self.catchInProgress];
 }
 

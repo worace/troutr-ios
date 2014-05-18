@@ -36,6 +36,7 @@
 
 - (TRCatch *)recordCatch:(TRCatch *)catch {
     [self.internalCatchLog addObject:catch];
+    [self saveChanges];
     return catch;
 }
 

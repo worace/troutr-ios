@@ -11,11 +11,12 @@
 #import "TRCatchDetailViewController.h"
 #import "TRFlyPickerTableViewController.h"
 
-@interface TRCatchDataEntryViewController () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, TRFlyPickerDelegate>
+@interface TRCatchDataEntryViewController () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, TRFlyPickerDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) UIPickerView *speciesPicker;
 @property (strong, nonatomic) IBOutlet UITextField *speciesField;
 @property (weak, nonatomic) IBOutlet UIImageView *catchImageView;
 @property (strong, nonatomic) IBOutlet UITextField *flyField;
+@property (strong, nonatomic) CLLocationManager *locationManager;
 @end
 
 @implementation TRCatchDataEntryViewController
@@ -44,11 +45,27 @@
     [self initSpeciesPicker];
     [self initCatchImageView];
     [self initFlyField];
+    [self initLocationTracking];
+}
+
+- (void)initLocationTracking {
+    NSLog(@"start location tracking");
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [self.locationManager startUpdatingLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    NSLog(@"location update");
+    NSLog(@"%d", [locations count]);
+    NSLog(@"first location %@", [locations firstObject]);
 }
 
 #pragma mark - IBActions
 - (IBAction)finishedEnteringData:(UIButton *)sender {
     [self saveCatchInProgress];
+    [self.locationManager stopUpdatingLocation];
     TRCatchDetailViewController *detail = [[TRCatchDetailViewController alloc] init];
     detail.catch = self.catchInProgress;
     [self.navigationController pushViewController:detail animated:YES];
@@ -57,6 +74,8 @@
 - (void)saveCatchInProgress {
     self.catchInProgress.species = self.speciesField.text;
     self.catchInProgress.fly = self.flyField.text;
+    NSLog(@"setting catch location to: %@", self.locationManager.location);
+    self.catchInProgress.location = self.locationManager.location;
     [[TRCatchLog sharedStore] recordCatch:self.catchInProgress];
 }
 

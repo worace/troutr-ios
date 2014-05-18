@@ -14,6 +14,7 @@
     [aCoder encodeObject:self.species forKey:@"species"];
     [aCoder encodeObject:self.fly forKey:@"fly"];
     [aCoder encodeObject:self.uid forKey:@"uid"];
+    [aCoder encodeObject:self.location forKey:@"location"];
 }
 -(instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
@@ -21,6 +22,7 @@
         _species = [aDecoder decodeObjectForKey:@"species"];
         _fly = [aDecoder decodeObjectForKey:@"fly"];
         _uid = [aDecoder decodeObjectForKey:@"uid"];
+        _location = [aDecoder decodeObjectForKey:@"location"];
     }
     return self;
 }

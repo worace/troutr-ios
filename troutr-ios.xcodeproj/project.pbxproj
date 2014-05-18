@@ -112,6 +112,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BB488D9E1929019B00162FFB /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BBEEF89519231607008AA7EF /* TRCatchDataEntryViewController.h */,
+				BBEEF89619231607008AA7EF /* TRCatchDataEntryViewController.m */,
+				BBEEF88E192311F7008AA7EF /* TRHomeViewController.h */,
+				BBEEF88F192311F7008AA7EF /* TRHomeViewController.m */,
+				BBEEF8A219231F61008AA7EF /* TRCatchDetailViewController.m */,
+				BBEEF8A119231F61008AA7EF /* TRCatchDetailViewController.h */,
+				BBEEF8A619243571008AA7EF /* TRCatchImagePickerViewController.h */,
+				BBEEF8A719243571008AA7EF /* TRCatchImagePickerViewController.m */,
+			);
+			name = controllers;
+			sourceTree = "<group>";
+		};
+		BB488D9F192901B100162FFB /* xibs */ = {
+			isa = PBXGroup;
+			children = (
+				BBEEF8A819243571008AA7EF /* TRCatchImagePickerViewController.xib */,
+				BBEEF8A319231F61008AA7EF /* TRCatchDetailViewController.xib */,
+				BBEEF893192313A7008AA7EF /* TRHomeViewController.xib */,
+				BBEEF89719231607008AA7EF /* TRCatchDataEntryViewController.xib */,
+			);
+			name = xibs;
+			sourceTree = "<group>";
+		};
+		BB488DA0192901C700162FFB /* categories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = categories;
+			sourceTree = "<group>";
+		};
 		BBEEF853192310B0008AA7EF = {
 			isa = PBXGroup;
 			children = (
@@ -147,19 +180,10 @@
 		BBEEF865192310B0008AA7EF /* troutr-ios */ = {
 			isa = PBXGroup;
 			children = (
-				BBEEF8A119231F61008AA7EF /* TRCatchDetailViewController.h */,
-				BBEEF8A619243571008AA7EF /* TRCatchImagePickerViewController.h */,
-				BBEEF8A719243571008AA7EF /* TRCatchImagePickerViewController.m */,
-				BBEEF8A819243571008AA7EF /* TRCatchImagePickerViewController.xib */,
-				BBEEF8A219231F61008AA7EF /* TRCatchDetailViewController.m */,
-				BBEEF8A319231F61008AA7EF /* TRCatchDetailViewController.xib */,
-				BBEEF89519231607008AA7EF /* TRCatchDataEntryViewController.h */,
-				BBEEF89619231607008AA7EF /* TRCatchDataEntryViewController.m */,
-				BBEEF89719231607008AA7EF /* TRCatchDataEntryViewController.xib */,
+				BB488DA0192901C700162FFB /* categories */,
+				BB488D9F192901B100162FFB /* xibs */,
+				BB488D9E1929019B00162FFB /* controllers */,
 				BBEEF86E192310B0008AA7EF /* TRAppDelegate.h */,
-				BBEEF88E192311F7008AA7EF /* TRHomeViewController.h */,
-				BBEEF88F192311F7008AA7EF /* TRHomeViewController.m */,
-				BBEEF893192313A7008AA7EF /* TRHomeViewController.xib */,
 				BBEEF86F192310B0008AA7EF /* TRAppDelegate.m */,
 				BBEEF871192310B0008AA7EF /* Images.xcassets */,
 				BBEEF866192310B0008AA7EF /* Supporting Files */,

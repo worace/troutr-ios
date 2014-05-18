@@ -13,31 +13,40 @@
 @interface TRCatchDetailViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *speciesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *flyLabel;
-@property (weak, nonatomic) IBOutlet UILabel *catchCountLabel
+@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *catchImage;
 ;
 @end
 
 @implementation TRCatchDetailViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self displayCatchImage];
     [self displaySpeciesInfo];
     [self displayFlyInfo];
-    [self displayCatchCount];
+    [self displayLocationInfo];
 }
 
 - (void)displaySpeciesInfo {
-    NSLog(@"catch is %@", self.catch);
+    NSLog(@"set species");
     self.speciesLabel.text = [@"Species: " stringByAppendingString:self.catch.species];
 }
 - (void)displayFlyInfo {
+    NSLog(@"set fly info");
     self.flyLabel.text = [@"Caught on: " stringByAppendingString:self.catch.fly];
 }
+- (void)displayCatchImage {
+    self.catchImage.contentMode = UIViewContentModeScaleAspectFit;
+    self.catchImage.image = self.catch.image;
+}
 
-- (void)displayCatchCount {
-    NSInteger count = [[[TRCatchLog sharedStore] allCatches] count];
-    self.catchCountLabel.text = [NSString stringWithFormat:@"you've logged %d catches", count];
+- (void)displayLocationInfo {
+    if (self.catch.location) {
+        self.locationLabel.text = [NSString stringWithFormat:@"%f, %f", self.catch.location.coordinate.latitude, self.catch.location.coordinate.longitude];
+    } else {
+        self.locationLabel.text = @"no location data available";
+    }
 }
 
 @end

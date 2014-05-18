@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 WoracesWorkshop. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import <UIKit/UIKit.h>
 #import "TRCatch.h"
 

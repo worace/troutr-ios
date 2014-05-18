@@ -11,6 +11,7 @@
 #import "TRCatch.h"
 #import "TRCatchLog.h"
 #import "TRCatchDetailViewController.h"
+#import "TRCatchTableViewCell.h"
 
 @interface TRHomeViewController ()
 
@@ -25,10 +26,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
+    [self registerCatchCell];
+    [self configureNavigationBar];
+}
+
+- (void)configureNavigationBar {
     UIBarButtonItem *addCatchButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(logCatch:)];
     addCatchButton.image = [UIImage imageNamed:@"troutIcon"];
     self.navigationItem.rightBarButtonItem = addCatchButton;
+}
+
+- (void)registerCatchCell {
+    [self.tableView registerClass:[TRCatchTableViewCell class] forCellReuseIdentifier:@"TRCatchTableViewCell"];
+    UINib *nib = [UINib nibWithNibName:@"TRCatchTableViewCell" bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:@"TRCatchTableViewCell"];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 
 }
 
@@ -53,10 +65,18 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
+    TRCatchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TRCatchTableViewCell"];
+    [cell.contentView.superview setClipsToBounds:NO];
     TRCatch *catch = [[[TRCatchLog sharedStore] allCatches] objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ caught on %@", catch.species, catch.fly];
+    cell.speciesLabel.text = catch.species;
+    cell.flyLabel.text = catch.fly;
+    cell.tumbnailView.image = catch.image;
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

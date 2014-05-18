@@ -13,6 +13,8 @@
 		BB488D9919244B5D00162FFB /* TRFlyStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488D9819244B5D00162FFB /* TRFlyStore.m */; };
 		BB488DA31929020B00162FFB /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488DA21929020B00162FFB /* UIImage+ImageEffects.m */; };
 		BB488DA7192918B000162FFB /* TRFlyPickerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488DA6192918B000162FFB /* TRFlyPickerTableViewController.m */; };
+		BB488DAF19295D8600162FFB /* TRCatchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488DAD19295D8600162FFB /* TRCatchTableViewCell.m */; };
+		BB488DB019295D8600162FFB /* TRCatchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB488DAE19295D8600162FFB /* TRCatchTableViewCell.xib */; };
 		BBEEF860192310B0008AA7EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF85F192310B0008AA7EF /* Foundation.framework */; };
 		BBEEF862192310B0008AA7EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF861192310B0008AA7EF /* CoreGraphics.framework */; };
 		BBEEF864192310B0008AA7EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF863192310B0008AA7EF /* UIKit.framework */; };
@@ -58,6 +60,9 @@
 		BB488DA4192918B000162FFB /* TRFlyPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRFlyPickerDelegate.h; sourceTree = "<group>"; };
 		BB488DA5192918B000162FFB /* TRFlyPickerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRFlyPickerTableViewController.h; sourceTree = "<group>"; };
 		BB488DA6192918B000162FFB /* TRFlyPickerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRFlyPickerTableViewController.m; sourceTree = "<group>"; };
+		BB488DAC19295D8600162FFB /* TRCatchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCatchTableViewCell.h; sourceTree = "<group>"; usesTabs = 0; };
+		BB488DAD19295D8600162FFB /* TRCatchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCatchTableViewCell.m; sourceTree = "<group>"; };
+		BB488DAE19295D8600162FFB /* TRCatchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCatchTableViewCell.xib; sourceTree = "<group>"; };
 		BBEEF85C192310B0008AA7EF /* troutr-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "troutr-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBEEF85F192310B0008AA7EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BBEEF861192310B0008AA7EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -196,6 +201,9 @@
 				BB488D9F192901B100162FFB /* xibs */,
 				BB488D9E1929019B00162FFB /* controllers */,
 				BBEEF86E192310B0008AA7EF /* TRAppDelegate.h */,
+				BB488DAC19295D8600162FFB /* TRCatchTableViewCell.h */,
+				BB488DAD19295D8600162FFB /* TRCatchTableViewCell.m */,
+				BB488DAE19295D8600162FFB /* TRCatchTableViewCell.xib */,
 				BBEEF86F192310B0008AA7EF /* TRAppDelegate.m */,
 				BBEEF871192310B0008AA7EF /* Images.xcassets */,
 				BBEEF866192310B0008AA7EF /* Supporting Files */,
@@ -328,6 +336,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBEEF86A192310B0008AA7EF /* InfoPlist.strings in Resources */,
+				BB488DB019295D8600162FFB /* TRCatchTableViewCell.xib in Resources */,
 				BBEEF894192313A7008AA7EF /* TRHomeViewController.xib in Resources */,
 				BBEEF8AA19243571008AA7EF /* TRCatchImagePickerViewController.xib in Resources */,
 				BBEEF872192310B0008AA7EF /* Images.xcassets in Resources */,
@@ -396,6 +405,7 @@
 				BB488D9919244B5D00162FFB /* TRFlyStore.m in Sources */,
 				BBEEF86C192310B0008AA7EF /* main.m in Sources */,
 				BBEEF8AD192437FC008AA7EF /* TRImageStore.m in Sources */,
+				BB488DAF19295D8600162FFB /* TRCatchTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

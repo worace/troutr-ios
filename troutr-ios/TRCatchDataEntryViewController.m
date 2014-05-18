@@ -10,6 +10,7 @@
 #import "TRCatchLog.h"
 #import "TRCatchDetailViewController.h"
 #import "TRFlyPickerTableViewController.h"
+#import "UIImage+ImageEffects.h"
 
 @interface TRCatchDataEntryViewController () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, TRFlyPickerDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) UIPickerView *speciesPicker;
@@ -36,7 +37,12 @@
 }
 
 - (void)initCatchImageView {
-    self.catchImageView.image = self.catchInProgress.image;
+    self.catchImageView.contentMode = UIViewContentModeScaleAspectFill;
+    if (self.catchInProgress.image) {
+        self.catchImageView.image = [self.catchInProgress.image applyLightEffect];
+    } else {
+        self.catchImageView.image = [[UIImage imageNamed:@"defaultCatchBackground"] applyLightEffect];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {

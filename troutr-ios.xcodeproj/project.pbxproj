@@ -12,6 +12,7 @@
 		BB488D9319244B2D00162FFB /* TRFlyStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488D9219244B2D00162FFB /* TRFlyStoreTest.m */; };
 		BB488D9919244B5D00162FFB /* TRFlyStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488D9819244B5D00162FFB /* TRFlyStore.m */; };
 		BB488DA31929020B00162FFB /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488DA21929020B00162FFB /* UIImage+ImageEffects.m */; };
+		BB488DA7192918B000162FFB /* TRFlyPickerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488DA6192918B000162FFB /* TRFlyPickerTableViewController.m */; };
 		BBEEF860192310B0008AA7EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF85F192310B0008AA7EF /* Foundation.framework */; };
 		BBEEF862192310B0008AA7EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF861192310B0008AA7EF /* CoreGraphics.framework */; };
 		BBEEF864192310B0008AA7EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF863192310B0008AA7EF /* UIKit.framework */; };
@@ -54,6 +55,9 @@
 		BB488D9819244B5D00162FFB /* TRFlyStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRFlyStore.m; sourceTree = "<group>"; };
 		BB488DA11929020B00162FFB /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		BB488DA21929020B00162FFB /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		BB488DA4192918B000162FFB /* TRFlyPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRFlyPickerDelegate.h; sourceTree = "<group>"; };
+		BB488DA5192918B000162FFB /* TRFlyPickerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRFlyPickerTableViewController.h; sourceTree = "<group>"; };
+		BB488DA6192918B000162FFB /* TRFlyPickerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRFlyPickerTableViewController.m; sourceTree = "<group>"; };
 		BBEEF85C192310B0008AA7EF /* troutr-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "troutr-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBEEF85F192310B0008AA7EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BBEEF861192310B0008AA7EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -120,6 +124,9 @@
 			children = (
 				BBEEF89519231607008AA7EF /* TRCatchDataEntryViewController.h */,
 				BBEEF89619231607008AA7EF /* TRCatchDataEntryViewController.m */,
+				BB488DA4192918B000162FFB /* TRFlyPickerDelegate.h */,
+				BB488DA5192918B000162FFB /* TRFlyPickerTableViewController.h */,
+				BB488DA6192918B000162FFB /* TRFlyPickerTableViewController.m */,
 				BBEEF88E192311F7008AA7EF /* TRHomeViewController.h */,
 				BBEEF88F192311F7008AA7EF /* TRHomeViewController.m */,
 				BBEEF8A219231F61008AA7EF /* TRCatchDetailViewController.m */,
@@ -379,6 +386,7 @@
 			files = (
 				BBEEF891192311F7008AA7EF /* TRHomeViewController.m in Sources */,
 				BBEEF870192310B0008AA7EF /* TRAppDelegate.m in Sources */,
+				BB488DA7192918B000162FFB /* TRFlyPickerTableViewController.m in Sources */,
 				BBEEF8A419231F61008AA7EF /* TRCatchDetailViewController.m in Sources */,
 				BBEEF89C192316C4008AA7EF /* TRCatch.m in Sources */,
 				BB488DA31929020B00162FFB /* UIImage+ImageEffects.m in Sources */,

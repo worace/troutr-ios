@@ -9,12 +9,16 @@
 #import "TRCatchDetailViewController.h"
 #import "TRCatchLog.h"
 #import "TRCatch.h"
+#import <MapKit/MapKit.h>
 
 @interface TRCatchDetailViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *speciesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *flyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *catchImage;
 ;
 @end
@@ -23,12 +27,28 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.scrollView.contentSize = self.contentView.frame.size;
     [self configureBackButton];
+    [self configureMapDisplay];
 }
 
 - (void)configureBackButton {
     UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(popToRoot)];
     self.navigationItem.leftBarButtonItem = newBackButton;
+}
+
+- (void)configureMapDisplay {
+    if (self.catch.location) {
+        NSLog(@"catch has location, displaying map");
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.catch.location.coordinate, 500, 500);
+        [self.mapView setRegion:region];
+        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+        [annotation setCoordinate:self.catch.location.coordinate];
+        [self.mapView addAnnotation:annotation];
+    } else {
+        NSLog(@"no location, hide the map");
+        self.mapView.hidden = YES;
+    }
 }
 
 - (void)popToRoot {

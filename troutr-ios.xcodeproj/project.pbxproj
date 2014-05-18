@@ -11,6 +11,7 @@
 		BB488D8F192442EA00162FFB /* TRImageStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488D8E192442EA00162FFB /* TRImageStoreTest.m */; };
 		BB488D9319244B2D00162FFB /* TRFlyStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488D9219244B2D00162FFB /* TRFlyStoreTest.m */; };
 		BB488D9919244B5D00162FFB /* TRFlyStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488D9819244B5D00162FFB /* TRFlyStore.m */; };
+		BB488DA31929020B00162FFB /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488DA21929020B00162FFB /* UIImage+ImageEffects.m */; };
 		BBEEF860192310B0008AA7EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF85F192310B0008AA7EF /* Foundation.framework */; };
 		BBEEF862192310B0008AA7EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF861192310B0008AA7EF /* CoreGraphics.framework */; };
 		BBEEF864192310B0008AA7EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF863192310B0008AA7EF /* UIKit.framework */; };
@@ -51,6 +52,8 @@
 		BB488D9219244B2D00162FFB /* TRFlyStoreTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRFlyStoreTest.m; sourceTree = "<group>"; };
 		BB488D9719244B5D00162FFB /* TRFlyStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRFlyStore.h; sourceTree = "<group>"; };
 		BB488D9819244B5D00162FFB /* TRFlyStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRFlyStore.m; sourceTree = "<group>"; };
+		BB488DA11929020B00162FFB /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		BB488DA21929020B00162FFB /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		BBEEF85C192310B0008AA7EF /* troutr-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "troutr-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBEEF85F192310B0008AA7EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BBEEF861192310B0008AA7EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -141,6 +144,8 @@
 		BB488DA0192901C700162FFB /* categories */ = {
 			isa = PBXGroup;
 			children = (
+				BB488DA11929020B00162FFB /* UIImage+ImageEffects.h */,
+				BB488DA21929020B00162FFB /* UIImage+ImageEffects.m */,
 			);
 			name = categories;
 			sourceTree = "<group>";
@@ -376,6 +381,7 @@
 				BBEEF870192310B0008AA7EF /* TRAppDelegate.m in Sources */,
 				BBEEF8A419231F61008AA7EF /* TRCatchDetailViewController.m in Sources */,
 				BBEEF89C192316C4008AA7EF /* TRCatch.m in Sources */,
+				BB488DA31929020B00162FFB /* UIImage+ImageEffects.m in Sources */,
 				BBEEF89819231607008AA7EF /* TRCatchDataEntryViewController.m in Sources */,
 				BBEEF8A019231CBC008AA7EF /* TRCatchLog.m in Sources */,
 				BBEEF8A919243571008AA7EF /* TRCatchImagePickerViewController.m in Sources */,

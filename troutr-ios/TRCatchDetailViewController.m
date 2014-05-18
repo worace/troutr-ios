@@ -29,16 +29,15 @@
 }
 
 - (void)displaySpeciesInfo {
-    NSLog(@"set species");
     self.speciesLabel.text = [@"Species: " stringByAppendingString:self.catch.species];
 }
 - (void)displayFlyInfo {
-    NSLog(@"set fly info");
     self.flyLabel.text = [@"Caught on: " stringByAppendingString:self.catch.fly];
 }
 - (void)displayCatchImage {
     self.catchImage.contentMode = UIViewContentModeScaleAspectFit;
     self.catchImage.image = self.catch.image;
+
 }
 
 - (void)displayLocationInfo {

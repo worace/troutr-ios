@@ -15,6 +15,7 @@
 		BB488DA7192918B000162FFB /* TRFlyPickerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488DA6192918B000162FFB /* TRFlyPickerTableViewController.m */; };
 		BB488DAF19295D8600162FFB /* TRCatchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488DAD19295D8600162FFB /* TRCatchTableViewCell.m */; };
 		BB488DB019295D8600162FFB /* TRCatchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB488DAE19295D8600162FFB /* TRCatchTableViewCell.xib */; };
+		BB81CE81192AEA550062BCB8 /* TRColors.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE80192AEA550062BCB8 /* TRColors.m */; };
 		BBEEF860192310B0008AA7EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF85F192310B0008AA7EF /* Foundation.framework */; };
 		BBEEF862192310B0008AA7EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF861192310B0008AA7EF /* CoreGraphics.framework */; };
 		BBEEF864192310B0008AA7EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF863192310B0008AA7EF /* UIKit.framework */; };
@@ -63,6 +64,8 @@
 		BB488DAC19295D8600162FFB /* TRCatchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCatchTableViewCell.h; sourceTree = "<group>"; usesTabs = 0; };
 		BB488DAD19295D8600162FFB /* TRCatchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCatchTableViewCell.m; sourceTree = "<group>"; };
 		BB488DAE19295D8600162FFB /* TRCatchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCatchTableViewCell.xib; sourceTree = "<group>"; };
+		BB81CE7F192AEA550062BCB8 /* TRColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRColors.h; sourceTree = "<group>"; };
+		BB81CE80192AEA550062BCB8 /* TRColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRColors.m; sourceTree = "<group>"; };
 		BBEEF85C192310B0008AA7EF /* troutr-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "troutr-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBEEF85F192310B0008AA7EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BBEEF861192310B0008AA7EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -197,6 +200,8 @@
 		BBEEF865192310B0008AA7EF /* troutr-ios */ = {
 			isa = PBXGroup;
 			children = (
+				BB81CE7F192AEA550062BCB8 /* TRColors.h */,
+				BB81CE80192AEA550062BCB8 /* TRColors.m */,
 				BB488DA0192901C700162FFB /* categories */,
 				BB488D9F192901B100162FFB /* xibs */,
 				BB488D9E1929019B00162FFB /* controllers */,
@@ -402,6 +407,7 @@
 				BBEEF89819231607008AA7EF /* TRCatchDataEntryViewController.m in Sources */,
 				BBEEF8A019231CBC008AA7EF /* TRCatchLog.m in Sources */,
 				BBEEF8A919243571008AA7EF /* TRCatchImagePickerViewController.m in Sources */,
+				BB81CE81192AEA550062BCB8 /* TRColors.m in Sources */,
 				BB488D9919244B5D00162FFB /* TRFlyStore.m in Sources */,
 				BBEEF86C192310B0008AA7EF /* main.m in Sources */,
 				BBEEF8AD192437FC008AA7EF /* TRImageStore.m in Sources */,

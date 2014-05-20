@@ -13,6 +13,12 @@
 #import "TRCatchDetailViewController.h"
 #import "TRCatchTableViewCell.h"
 
+@implementation UINavigationController (StatusBarStyle)
+- (UIViewController *)childViewControllerForStatusBarStyle {
+    return self.topViewController;
+}
+@end
+
 @interface TRHomeViewController ()
 
 @end

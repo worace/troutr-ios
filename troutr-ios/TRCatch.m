@@ -36,6 +36,13 @@
     return [[TRImageStore sharedStore] imageForKey:self.uid];
 }
 
+- (NSDate *)dateCreated {
+    if (!_dateCreated) {
+        _dateCreated = [NSDate date];
+    }
+    return _dateCreated;
+}
+
 - (NSString *)uid {
     if (!_uid) {
         _uid = [[[NSUUID alloc] init] UUIDString];

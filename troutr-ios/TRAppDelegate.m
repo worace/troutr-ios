@@ -9,6 +9,7 @@
 #import "TRAppDelegate.h"
 #import "TRHomeViewController.h"
 #import "TRCatchLog.h"
+#import "TRCameraSessionViewController.h"
 
 @implementation TRAppDelegate
 
@@ -19,6 +20,10 @@
     TRHomeViewController *homeVC = [[TRHomeViewController alloc] init];
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:homeVC];
     self.window.rootViewController = navVC;
+
+//    TRCameraSessionViewController *camVC = [[TRCameraSessionViewController alloc] init];
+//    self.window.rootViewController = camVC;
+//
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     

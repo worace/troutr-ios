@@ -37,29 +37,46 @@
 }
 
 - (void)initCatchImageView {
-    self.catchImageView.contentMode = UIViewContentModeScaleAspectFill;
-    if (self.catchInProgress.image) {
-        self.catchImageView.image = [self.catchInProgress.image applyLightEffect];
-    } else {
-        self.catchImageView.image = [[UIImage imageNamed:@"defaultCatchBackground"] applyLightEffect];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIImage *imageForBackground = nil;
+        if (self.catchInProgress.image) {
+            imageForBackground = [self.catchInProgress.image applyLightEffect];
+        } else {
+            imageForBackground = [[UIImage imageNamed:@"defaultCatchBackground"] applyLightEffect];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.catchImageView.contentMode = UIViewContentModeScaleAspectFill;
+            self.catchImageView.alpha = 0.0;
+            self.catchImageView.image = imageForBackground;
+            [UIView animateWithDuration:2.0 animations:^{
+                self.catchImageView.alpha = 1.0;
+            }];
+            NSLog(@"finished setting image");
+        });
+    });
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"DATA ENTRY WILL APPEAR");
-    [super viewWillAppear:animated];
+- (void)viewDidLoad {
+    [super viewDidLoad];
     [self initSpeciesPicker];
+    //TODO -- figure out why image view loads so slow coming out of camera session
     [self initCatchImageView];
     [self initFlyField];
     [self initLocationTracking];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+}
+
 - (void)initLocationTracking {
-    NSLog(@"start location tracking");
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    [self.locationManager startUpdatingLocation];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        [self.locationManager startUpdatingLocation];
+    });
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {

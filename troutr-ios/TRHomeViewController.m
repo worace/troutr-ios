@@ -12,6 +12,9 @@
 #import "TRCatchLog.h"
 #import "TRCatchDetailViewController.h"
 #import "TRCatchTableViewCell.h"
+#import "TRCameraSessionViewController.h"
+#import "TRCameraSessionViewControllerDelegate.h"
+#import "TRCatchDataEntryViewController.h"
 
 @implementation UINavigationController (StatusBarStyle)
 - (UIViewController *)childViewControllerForStatusBarStyle {
@@ -19,7 +22,7 @@
 }
 @end
 
-@interface TRHomeViewController ()
+@interface TRHomeViewController () <TRCameraSessionViewControllerDelegate>
 
 @end
 
@@ -56,9 +59,20 @@
 }
 
 - (IBAction)logCatch:(id)sender {
-    TRCatchImagePickerViewController *imageStep = [[TRCatchImagePickerViewController alloc] init];
-    imageStep.catchInProgress = [[TRCatch alloc] init];
-    [self.navigationController pushViewController:imageStep animated:YES];
+    TRCameraSessionViewController *cameraSession = [[TRCameraSessionViewController alloc] init];
+    cameraSession.delegate = self;
+    [self.navigationController pushViewController:cameraSession animated:YES];
+}
+
+- (void)cameraSessionController:(TRCameraSessionViewController *)cameraSessionController didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    NSLog(@"camera session returned with image");
+    UIImage *image = info[@"image"];
+    TRCatch *catch = [[TRCatch alloc] init];
+    catch.image = image;
+    TRCatchDataEntryViewController *dataEntry = [[TRCatchDataEntryViewController alloc] init];
+    dataEntry.catchInProgress = catch;
+    NSLog(@"pushing view controller");
+    [self.navigationController pushViewController:dataEntry animated:YES];
 }
 
 # pragma - mark UITableView

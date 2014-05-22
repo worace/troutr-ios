@@ -18,9 +18,13 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 
 @interface TRCamViewController () <AVCaptureFileOutputRecordingDelegate, UIGestureRecognizerDelegate>
 
-// For use in the storyboards.
 @property (weak, nonatomic) IBOutlet UIButton *screenButton;
 @property (nonatomic, weak) IBOutlet TRCamPreviewView *previewView;
+
+@property (nonatomic, strong) UIProgressView *progressView;
+@property (nonatomic, strong) NSTimer *recordingProgressTimer;
+@property (nonatomic, strong) NSDate *recordingStartedTimeStamp;
+
 
 - (IBAction)toggleMovieRecording:(id)sender;
 - (IBAction)snapStillImage:(id)sender;
@@ -262,7 +266,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 }
 
 - (void)registerGestureRecognizers {
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMovieRecording:)];
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(screenButtonLongPress:)];
+    longPress.allowableMovement = 50;
     [self.screenButton addGestureRecognizer:longPress];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(snapStillImage:)];
     [self.screenButton addGestureRecognizer:tapGesture];
@@ -273,8 +278,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (IBAction)toggleMovieRecording:(id)sender
 {
 	dispatch_async([self sessionQueue], ^{
-		if (![[self movieFileOutput] isRecording])
-		{
+		if (![[self movieFileOutput] isRecording]) {
 			[self setLockInterfaceRotation:YES];
 			
 			if ([[UIDevice currentDevice] isMultitaskingSupported])
@@ -291,7 +295,6 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			
 			// Start recording to a temporary file.
 			NSString *outputFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[@"movie" stringByAppendingPathExtension:@"mov"]];
-            NSLog(@"starting recording");
 			[[self movieFileOutput] startRecordingToOutputFileURL:[NSURL fileURLWithPath:outputFilePath] recordingDelegate:self];
 		}
 		else
@@ -299,6 +302,31 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			[[self movieFileOutput] stopRecording];
 		}
 	});
+}
+
+- (void)displayRecordingProgressBar {
+    self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+    CGFloat width = self.view.frame.size.width;
+    self.progressView.frame = CGRectMake(0, 0, width, 0);
+    [self.progressView setTransform:CGAffineTransformMakeScale(1.0, 5.0)];
+    [self.view addSubview:self.progressView];
+    
+    self.recordingStartedTimeStamp = [NSDate date];
+    self.recordingProgressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgressBarWithTimer:) userInfo:nil repeats:YES];
+}
+
+- (void)resetProgressBar {
+    [self.recordingProgressTimer invalidate];
+    self.recordingProgressTimer = nil;
+    self.recordingStartedTimeStamp = nil;
+    self.progressView = nil;
+}
+
+- (void)updateProgressBarWithTimer:(NSTimer *)timer {
+    NSTimeInterval timeAllowed = 8;
+    NSTimeInterval elapsedTime = [[NSDate date] timeIntervalSinceDate:self.recordingStartedTimeStamp];
+    float percentageElapsed = elapsedTime / timeAllowed;
+    self.progressView.progress = percentageElapsed;
 }
 
 - (IBAction)snapStillImage:(id)sender
@@ -335,6 +363,15 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	[self focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:NO];
 }
 
+- (void)screenButtonLongPress:(UILongPressGestureRecognizer *)gr {
+    if (gr.state == UIGestureRecognizerStateBegan) {
+        [self displayRecordingProgressBar];
+        [self toggleMovieRecording:nil];
+    } else if (gr.state == UIGestureRecognizerStateEnded) {
+        [self resetProgressBar];
+        [self toggleMovieRecording:nil];
+    }
+}
 #pragma mark File Output Delegate
 // for video output
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error

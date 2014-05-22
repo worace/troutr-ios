@@ -16,7 +16,6 @@
 		BB488DAF19295D8600162FFB /* TRCatchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488DAD19295D8600162FFB /* TRCatchTableViewCell.m */; };
 		BB488DB019295D8600162FFB /* TRCatchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB488DAE19295D8600162FFB /* TRCatchTableViewCell.xib */; };
 		BB81CE81192AEA550062BCB8 /* TRColors.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE80192AEA550062BCB8 /* TRColors.m */; };
-		BB81CE8D192C270F0062BCB8 /* TRCameraSessionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE8B192C270F0062BCB8 /* TRCameraSessionViewController.m */; };
 		BB81CE8E192C270F0062BCB8 /* TRCameraSessionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB81CE8C192C270F0062BCB8 /* TRCameraSessionViewController.xib */; };
 		BB81CE9C192D73740062BCB8 /* TRCamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE9A192D73740062BCB8 /* TRCamViewController.m */; };
 		BB81CE9D192D73740062BCB8 /* TRCamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB81CE9B192D73740062BCB8 /* TRCamViewController.xib */; };
@@ -71,8 +70,6 @@
 		BB488DAE19295D8600162FFB /* TRCatchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCatchTableViewCell.xib; sourceTree = "<group>"; };
 		BB81CE7F192AEA550062BCB8 /* TRColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRColors.h; sourceTree = "<group>"; };
 		BB81CE80192AEA550062BCB8 /* TRColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRColors.m; sourceTree = "<group>"; };
-		BB81CE8A192C270F0062BCB8 /* TRCameraSessionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCameraSessionViewController.h; sourceTree = "<group>"; };
-		BB81CE8B192C270F0062BCB8 /* TRCameraSessionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCameraSessionViewController.m; sourceTree = "<group>"; };
 		BB81CE8C192C270F0062BCB8 /* TRCameraSessionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCameraSessionViewController.xib; sourceTree = "<group>"; };
 		BB81CE90192C3ACD0062BCB8 /* TRCameraSessionViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TRCameraSessionViewControllerDelegate.h; sourceTree = "<group>"; };
 		BB81CE99192D73740062BCB8 /* TRCamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCamViewController.h; sourceTree = "<group>"; };
@@ -155,8 +152,6 @@
 				BBEEF8A119231F61008AA7EF /* TRCatchDetailViewController.h */,
 				BBEEF8A619243571008AA7EF /* TRCatchImagePickerViewController.h */,
 				BBEEF8A719243571008AA7EF /* TRCatchImagePickerViewController.m */,
-				BB81CE8A192C270F0062BCB8 /* TRCameraSessionViewController.h */,
-				BB81CE8B192C270F0062BCB8 /* TRCameraSessionViewController.m */,
 				BB81CE99192D73740062BCB8 /* TRCamViewController.h */,
 				BB81CE9A192D73740062BCB8 /* TRCamViewController.m */,
 			);
@@ -452,7 +447,6 @@
 				BB81CE81192AEA550062BCB8 /* TRColors.m in Sources */,
 				BB488D9919244B5D00162FFB /* TRFlyStore.m in Sources */,
 				BBEEF86C192310B0008AA7EF /* main.m in Sources */,
-				BB81CE8D192C270F0062BCB8 /* TRCameraSessionViewController.m in Sources */,
 				BBEEF8AD192437FC008AA7EF /* TRImageStore.m in Sources */,
 				BB81CEA0192D73950062BCB8 /* TRCamPreviewView.m in Sources */,
 				BB488DAF19295D8600162FFB /* TRCatchTableViewCell.m in Sources */,

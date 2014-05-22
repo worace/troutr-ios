@@ -7,8 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TRCamViewController">
             <connections>
                 <outlet property="previewView" destination="vL2-sl-kC7" id="HeV-lJ-aNn"/>
-                <outlet property="recordButton" destination="RwV-m2-pko" id="ocI-cR-IGF"/>
-                <outlet property="stillButton" destination="C3t-D5-iHD" id="M2T-DO-fcS"/>
+                <outlet property="screenButton" destination="XeA-1h-rrr" id="9na-3n-Iwe"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -21,33 +20,20 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C3t-D5-iHD">
-                            <rect key="frame" x="223" y="518" width="77" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XeA-1h-rrr">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Take Photo">
+                            <state key="normal">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <connections>
-                                <action selector="snapStillImage:" destination="-1" eventType="touchUpInside" id="OJB-L9-sUv"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RwV-m2-pko">
-                            <rect key="frame" x="20" y="518" width="50" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Record">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="toggleMovieRecording:" destination="-1" eventType="touchUpInside" id="6p3-rD-0Kr"/>
-                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="C3t-D5-iHD" secondAttribute="trailing" constant="20" id="ECY-wr-sPv"/>
-                        <constraint firstItem="RwV-m2-pko" firstAttribute="leading" secondItem="vL2-sl-kC7" secondAttribute="leading" constant="20" id="Q8Y-5c-P9m"/>
-                        <constraint firstAttribute="bottom" secondItem="C3t-D5-iHD" secondAttribute="bottom" constant="20" id="iER-Cm-iTg"/>
-                        <constraint firstAttribute="bottom" secondItem="RwV-m2-pko" secondAttribute="bottom" constant="20" id="loQ-Ue-Fqc"/>
+                        <constraint firstAttribute="trailing" secondItem="XeA-1h-rrr" secondAttribute="trailing" id="E9m-YJ-gcr"/>
+                        <constraint firstItem="XeA-1h-rrr" firstAttribute="leading" secondItem="vL2-sl-kC7" secondAttribute="leading" id="H6U-Ds-ZRs"/>
+                        <constraint firstAttribute="bottom" secondItem="XeA-1h-rrr" secondAttribute="bottom" id="TJA-jp-j4Y"/>
+                        <constraint firstItem="XeA-1h-rrr" firstAttribute="top" secondItem="vL2-sl-kC7" secondAttribute="top" id="l1j-xK-FhT"/>
                     </constraints>
                 </view>
             </subviews>

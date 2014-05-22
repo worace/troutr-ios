@@ -16,12 +16,11 @@ static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * RecordingContext = &RecordingContext;
 static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDeviceAuthorizedContext;
 
-@interface TRCamViewController () <AVCaptureFileOutputRecordingDelegate>
+@interface TRCamViewController () <AVCaptureFileOutputRecordingDelegate, UIGestureRecognizerDelegate>
 
 // For use in the storyboards.
+@property (weak, nonatomic) IBOutlet UIButton *screenButton;
 @property (nonatomic, weak) IBOutlet TRCamPreviewView *previewView;
-@property (nonatomic, weak) IBOutlet UIButton *recordButton;
-@property (nonatomic, weak) IBOutlet UIButton *stillButton;
 
 - (IBAction)toggleMovieRecording:(id)sender;
 - (IBAction)snapStillImage:(id)sender;
@@ -61,6 +60,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
     [self initCaptureSession];
 	[self checkDeviceAuthorizationStatus];
     [self initSerialSessionQueue];
+    [self registerGestureRecognizers];
 	
 	dispatch_async(self.sessionQueue, ^{
 		[self setBackgroundRecordingID:UIBackgroundTaskInvalid];
@@ -127,13 +127,11 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (isRecording)
 			{
-				[[self recordButton] setTitle:NSLocalizedString(@"Stop", @"Recording button stop title") forState:UIControlStateNormal];
-				[[self recordButton] setEnabled:YES];
+                [self.screenButton setEnabled:NO];
 			}
 			else
 			{
-				[[self recordButton] setTitle:NSLocalizedString(@"Record", @"Recording button record title") forState:UIControlStateNormal];
-				[[self recordButton] setEnabled:YES];
+                [self.screenButton setEnabled:YES];
 			}
 		});
 	}
@@ -144,13 +142,12 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (isRunning)
 			{
-				[[self recordButton] setEnabled:YES];
-				[[self stillButton] setEnabled:YES];
+                [self.screenButton setEnabled:YES];
+
 			}
 			else
 			{
-				[[self recordButton] setEnabled:NO];
-				[[self stillButton] setEnabled:NO];
+                [self.screenButton setEnabled:NO];
 			}
 		});
 	}
@@ -260,17 +257,20 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
         dispatch_async([strongSelf sessionQueue], ^{
             // Manually restarting the session since it must have been stopped due to an error.
             [[strongSelf session] startRunning];
-            [[strongSelf recordButton] setTitle:NSLocalizedString(@"Record", @"Recording button record title") forState:UIControlStateNormal];
         });
     }]];
+}
+
+- (void)registerGestureRecognizers {
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(snapStillImage:)];
+    tapGesture.delegate = self;
+    [self.screenButton addGestureRecognizer:tapGesture];
 }
 
 #pragma mark Actions
 
 - (IBAction)toggleMovieRecording:(id)sender
 {
-	[[self recordButton] setEnabled:NO];
-	
 	dispatch_async([self sessionQueue], ^{
 		if (![[self movieFileOutput] isRecording])
 		{
@@ -290,6 +290,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			
 			// Start recording to a temporary file.
 			NSString *outputFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[@"movie" stringByAppendingPathExtension:@"mov"]];
+            NSLog(@"starting recording");
 			[[self movieFileOutput] startRecordingToOutputFileURL:[NSURL fileURLWithPath:outputFilePath] recordingDelegate:self];
 		}
 		else
@@ -345,7 +346,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	// Note the backgroundRecordingID for use in the ALAssetsLibrary completion handler to end the background task associated with this recording. This allows a new recording to be started, associated with a new UIBackgroundTaskIdentifier, once the movie file output's -isRecording is back to NO — which happens sometime after this method returns.
 	UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
 	[self setBackgroundRecordingID:UIBackgroundTaskInvalid];
-	
+	NSLog(@"ready to begin writing to asset lib");
 	[[[ALAssetsLibrary alloc] init] writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:^(NSURL *assetURL, NSError *error) {
 		if (error)
 			NSLog(@"%@", error);
@@ -354,6 +355,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 		
 		if (backgroundRecordingID != UIBackgroundTaskInvalid)
 			[[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID];
+        NSLog(@"finished writing video, asset url is: %@", assetURL);
 	}];
 }
 

@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class TRCameraSessionViewController;
+@class TRCamViewController;
 
 @protocol TRCameraSessionViewControllerDelegate <NSObject>
 @required
-- (void)cameraSessionController:(TRCameraSessionViewController *)cameraSessionController didFinishPickingMediaWithInfo:(NSDictionary *)info;
+- (void)cameraSessionController:(TRCamViewController *)cameraSessionController didFinishPickingMediaWithInfo:(NSDictionary *)info;
 @end

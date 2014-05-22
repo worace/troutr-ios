@@ -14,6 +14,7 @@
 #import "TRCatchTableViewCell.h"
 #import "TRCameraSessionViewControllerDelegate.h"
 #import "TRCatchDataEntryViewController.h"
+#import "TRCamViewController.h"
 
 @implementation UINavigationController (StatusBarStyle)
 - (UIViewController *)childViewControllerForStatusBarStyle {
@@ -58,19 +59,19 @@
 }
 
 - (IBAction)logCatch:(id)sender {
-//    TRCameraSessionViewController *cameraSession = [[TRCameraSessionViewController alloc] init];
-//    cameraSession.delegate = self;
-//    [self.navigationController pushViewController:cameraSession animated:YES];
+    TRCamViewController *cameraSession = [[TRCamViewController alloc] init];
+    cameraSession.delegate = self;
+    [self.navigationController pushViewController:cameraSession animated:YES];
 }
 
-- (void)cameraSessionController:(TRCameraSessionViewController *)cameraSessionController didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)cameraSessionController:(TRCamViewController *)cameraSessionController didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSLog(@"camera session returned with info %@", info);
     UIImage *image = info[@"image"];
     TRCatch *catch = [[TRCatch alloc] init];
     catch.image = image;
     TRCatchDataEntryViewController *dataEntry = [[TRCatchDataEntryViewController alloc] init];
     dataEntry.catchInProgress = catch;
-//    [self.navigationController pushViewController:dataEntry animated:YES];
+    [self.navigationController pushViewController:dataEntry animated:YES];
 }
 
 # pragma - mark UITableView

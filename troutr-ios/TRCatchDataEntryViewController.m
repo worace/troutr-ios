@@ -37,10 +37,12 @@
 }
 
 - (void)initCatchImageView {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         UIImage *imageForBackground = nil;
         if (self.catchInProgress.image) {
+            NSDate *start = [NSDate date];
             imageForBackground = [self.catchInProgress.image applyLightEffect];
+            NSLog(@"elapsed time on light effect: %f", [[NSDate date] timeIntervalSinceDate:start]);
         } else {
             imageForBackground = [[UIImage imageNamed:@"defaultCatchBackground"] applyLightEffect];
         }
@@ -48,10 +50,9 @@
             self.catchImageView.contentMode = UIViewContentModeScaleAspectFill;
             self.catchImageView.alpha = 0.0;
             self.catchImageView.image = imageForBackground;
-            [UIView animateWithDuration:2.0 animations:^{
+            [UIView animateWithDuration:0.7 animations:^{
                 self.catchImageView.alpha = 1.0;
             }];
-            NSLog(@"finished setting image");
         });
     });
 }

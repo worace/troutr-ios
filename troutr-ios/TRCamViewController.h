@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TRCameraSessionViewControllerDelegate.h"
 
 @interface TRCamViewController : UIViewController
-
+@property (nonatomic, weak) NSObject<TRCameraSessionViewControllerDelegate> *delegate;
 @end

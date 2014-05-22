@@ -19,10 +19,10 @@
     
     TRHomeViewController *homeVC = [[TRHomeViewController alloc] init];
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:homeVC];
-//    self.window.rootViewController = navVC;
+    self.window.rootViewController = navVC;
 
-    TRCamViewController *camVC = [[TRCamViewController alloc] init];
-    self.window.rootViewController = camVC;
+//    TRCamViewController *camVC = [[TRCamViewController alloc] init];
+//    self.window.rootViewController = camVC;
 
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

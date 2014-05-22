@@ -25,6 +25,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 @property (nonatomic, strong) NSTimer *recordingProgressTimer;
 @property (nonatomic, strong) NSDate *recordingStartedTimeStamp;
 
+@property (nonatomic, strong) UIImageView *stillImageInProgress;
+
 
 - (IBAction)toggleMovieRecording:(id)sender;
 - (IBAction)snapStillImage:(id)sender;
@@ -61,6 +63,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+    [self configureNavigationBar];
     [self initCaptureSession];
 	[self checkDeviceAuthorizationStatus];
     [self initSerialSessionQueue];
@@ -164,7 +167,10 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 #pragma mark Initialization / Setup
 - (void)initCaptureSession {
 	AVCaptureSession *session = [[AVCaptureSession alloc] init];
-	[self setSession:session];
+    session.sessionPreset = AVCaptureSessionPresetMedium;
+    self.session = session;
+    AVCaptureVideoPreviewLayer *layer = (AVCaptureVideoPreviewLayer *)self.previewView.layer;
+    layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [[self previewView] setSession:session];
 }
 
@@ -273,6 +279,10 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
     [self.screenButton addGestureRecognizer:tapGesture];
 }
 
+- (void)configureNavigationBar {
+    [[self navigationController] setNavigationBarHidden:YES animated:NO];
+}
+
 #pragma mark Actions
 
 - (IBAction)toggleMovieRecording:(id)sender
@@ -344,11 +354,59 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			if (imageDataSampleBuffer)
 			{
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+                
 				UIImage *image = [[UIImage alloc] initWithData:imageData];
-				[[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
+                
+                UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+                imageView.frame = self.view.frame;
+
+//                UIButton *button = [[UIButton alloc] init];
+//                button.frame = CGRectMake(0, 0, 100, 100);
+//                [button setTitle:@"back" forState:UIControlStateNormal];
+//                [button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+//                [imageContainer addSubview:button];
+                
+                self.stillImageInProgress = imageView;
+                [self.view addSubview:imageView];
+                
+                [[self navigationController].navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+                [self navigationController].navigationBar.shadowImage = [UIImage new];
+                [self navigationController].navigationBar.translucent = YES;
+                [[self navigationController] setNavigationBarHidden:NO animated:NO];
+                
+                UIBarButtonItem *cancel = [[UIBarButtonItem alloc]
+                                               initWithTitle:@"cancel"
+                                               style:UIBarButtonItemStyleBordered
+                                               target:self
+                                               action:@selector(cancelStillImage)];
+                self.navigationItem.leftBarButtonItem = cancel;
+                
+                UIBarButtonItem *confirm = [[UIBarButtonItem alloc]
+                                           initWithTitle:@"confirm"
+                                           style:UIBarButtonItemStyleBordered
+                                           target:self
+                                           action:@selector(confirmStillImage)];
+                self.navigationItem.rightBarButtonItem = confirm;
 			}
 		}];
 	});
+}
+
+- (void)cancelStillImage {
+    NSLog(@"cancel");
+    [self.stillImageInProgress removeFromSuperview];
+    self.stillImageInProgress = nil;
+}
+
+- (void)confirmStillImage {
+    UIImage *image = self.stillImageInProgress.image;
+    NSLog(@"confirm; image is %@", image);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
+        NSLog(@"finished writing still image to photo library");
+    });
+    [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"image":image}];
+
 }
 
 - (IBAction)focusAndExposeTap:(UIGestureRecognizer *)gestureRecognizer

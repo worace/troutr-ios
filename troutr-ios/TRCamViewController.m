@@ -262,8 +262,9 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 }
 
 - (void)registerGestureRecognizers {
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMovieRecording:)];
+    [self.screenButton addGestureRecognizer:longPress];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(snapStillImage:)];
-    tapGesture.delegate = self;
     [self.screenButton addGestureRecognizer:tapGesture];
 }
 

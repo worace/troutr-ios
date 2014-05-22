@@ -9,7 +9,7 @@
 #import "TRAppDelegate.h"
 #import "TRHomeViewController.h"
 #import "TRCatchLog.h"
-#import "TRCameraSessionViewController.h"
+#import "TRCamViewController.h"
 
 @implementation TRAppDelegate
 
@@ -19,15 +19,15 @@
     
     TRHomeViewController *homeVC = [[TRHomeViewController alloc] init];
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:homeVC];
-    self.window.rootViewController = navVC;
+//    self.window.rootViewController = navVC;
 
-//    TRCameraSessionViewController *camVC = [[TRCameraSessionViewController alloc] init];
-//    self.window.rootViewController = camVC;
-//
+    TRCamViewController *camVC = [[TRCamViewController alloc] init];
+    self.window.rootViewController = camVC;
+
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    NSLog(@"there are %d", [[TRCatchLog sharedStore].allCatches count]);
+    NSLog(@"there are %lu", (unsigned long)[[TRCatchLog sharedStore].allCatches count]);
     return YES;
 }
 

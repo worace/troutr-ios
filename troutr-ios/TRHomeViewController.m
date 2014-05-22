@@ -65,14 +65,13 @@
 }
 
 - (void)cameraSessionController:(TRCameraSessionViewController *)cameraSessionController didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    NSLog(@"camera session returned with image");
+    NSLog(@"camera session returned with info %@", info);
     UIImage *image = info[@"image"];
     TRCatch *catch = [[TRCatch alloc] init];
     catch.image = image;
     TRCatchDataEntryViewController *dataEntry = [[TRCatchDataEntryViewController alloc] init];
     dataEntry.catchInProgress = catch;
-    NSLog(@"pushing view controller");
-    [self.navigationController pushViewController:dataEntry animated:YES];
+//    [self.navigationController pushViewController:dataEntry animated:YES];
 }
 
 # pragma - mark UITableView

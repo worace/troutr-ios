@@ -1,15 +1,14 @@
 //
-//  AVCamPreviewView.m
+//  TRCamPreviewView.m
 //  troutr-ios
 //
-//  Created by Horace Williams on 5/20/14.
+//  Created by Horace Williams on 5/21/14.
 //  Copyright (c) 2014 WoracesWorkshop. All rights reserved.
 //
-
-#import "AVCamPreviewView.h"
+#import "TRCamPreviewView.h"
 #import <AVFoundation/AVFoundation.h>
 
-@implementation AVCamPreviewView
+@implementation TRCamPreviewView
 + (Class)layerClass {
     return [AVCaptureVideoPreviewLayer class];
 }

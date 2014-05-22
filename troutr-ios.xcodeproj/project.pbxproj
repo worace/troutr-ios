@@ -16,9 +16,11 @@
 		BB488DAF19295D8600162FFB /* TRCatchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB488DAD19295D8600162FFB /* TRCatchTableViewCell.m */; };
 		BB488DB019295D8600162FFB /* TRCatchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB488DAE19295D8600162FFB /* TRCatchTableViewCell.xib */; };
 		BB81CE81192AEA550062BCB8 /* TRColors.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE80192AEA550062BCB8 /* TRColors.m */; };
-		BB81CE89192C25D90062BCB8 /* AVCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE88192C25D90062BCB8 /* AVCamPreviewView.m */; };
 		BB81CE8D192C270F0062BCB8 /* TRCameraSessionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE8B192C270F0062BCB8 /* TRCameraSessionViewController.m */; };
 		BB81CE8E192C270F0062BCB8 /* TRCameraSessionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB81CE8C192C270F0062BCB8 /* TRCameraSessionViewController.xib */; };
+		BB81CE9C192D73740062BCB8 /* TRCamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE9A192D73740062BCB8 /* TRCamViewController.m */; };
+		BB81CE9D192D73740062BCB8 /* TRCamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB81CE9B192D73740062BCB8 /* TRCamViewController.xib */; };
+		BB81CEA0192D73950062BCB8 /* TRCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */; };
 		BBEEF860192310B0008AA7EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF85F192310B0008AA7EF /* Foundation.framework */; };
 		BBEEF862192310B0008AA7EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF861192310B0008AA7EF /* CoreGraphics.framework */; };
 		BBEEF864192310B0008AA7EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF863192310B0008AA7EF /* UIKit.framework */; };
@@ -69,12 +71,15 @@
 		BB488DAE19295D8600162FFB /* TRCatchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCatchTableViewCell.xib; sourceTree = "<group>"; };
 		BB81CE7F192AEA550062BCB8 /* TRColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRColors.h; sourceTree = "<group>"; };
 		BB81CE80192AEA550062BCB8 /* TRColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRColors.m; sourceTree = "<group>"; };
-		BB81CE87192C25D90062BCB8 /* AVCamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCamPreviewView.h; sourceTree = "<group>"; };
-		BB81CE88192C25D90062BCB8 /* AVCamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCamPreviewView.m; sourceTree = "<group>"; };
 		BB81CE8A192C270F0062BCB8 /* TRCameraSessionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCameraSessionViewController.h; sourceTree = "<group>"; };
 		BB81CE8B192C270F0062BCB8 /* TRCameraSessionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCameraSessionViewController.m; sourceTree = "<group>"; };
 		BB81CE8C192C270F0062BCB8 /* TRCameraSessionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCameraSessionViewController.xib; sourceTree = "<group>"; };
 		BB81CE90192C3ACD0062BCB8 /* TRCameraSessionViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TRCameraSessionViewControllerDelegate.h; sourceTree = "<group>"; };
+		BB81CE99192D73740062BCB8 /* TRCamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCamViewController.h; sourceTree = "<group>"; };
+		BB81CE9A192D73740062BCB8 /* TRCamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCamViewController.m; sourceTree = "<group>"; };
+		BB81CE9B192D73740062BCB8 /* TRCamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCamViewController.xib; sourceTree = "<group>"; };
+		BB81CE9E192D73950062BCB8 /* TRCamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCamPreviewView.h; sourceTree = "<group>"; };
+		BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCamPreviewView.m; sourceTree = "<group>"; };
 		BBEEF85C192310B0008AA7EF /* troutr-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "troutr-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBEEF85F192310B0008AA7EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BBEEF861192310B0008AA7EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -152,6 +157,8 @@
 				BBEEF8A719243571008AA7EF /* TRCatchImagePickerViewController.m */,
 				BB81CE8A192C270F0062BCB8 /* TRCameraSessionViewController.h */,
 				BB81CE8B192C270F0062BCB8 /* TRCameraSessionViewController.m */,
+				BB81CE99192D73740062BCB8 /* TRCamViewController.h */,
+				BB81CE9A192D73740062BCB8 /* TRCamViewController.m */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -160,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				BB81CE8C192C270F0062BCB8 /* TRCameraSessionViewController.xib */,
+				BB81CE9B192D73740062BCB8 /* TRCamViewController.xib */,
 				BBEEF8A819243571008AA7EF /* TRCatchImagePickerViewController.xib */,
 				BBEEF8A319231F61008AA7EF /* TRCatchDetailViewController.xib */,
 				BBEEF893192313A7008AA7EF /* TRHomeViewController.xib */,
@@ -180,8 +188,8 @@
 		BB81CE82192C257E0062BCB8 /* views */ = {
 			isa = PBXGroup;
 			children = (
-				BB81CE87192C25D90062BCB8 /* AVCamPreviewView.h */,
-				BB81CE88192C25D90062BCB8 /* AVCamPreviewView.m */,
+				BB81CE9E192D73950062BCB8 /* TRCamPreviewView.h */,
+				BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -374,6 +382,7 @@
 				BBEEF86A192310B0008AA7EF /* InfoPlist.strings in Resources */,
 				BB488DB019295D8600162FFB /* TRCatchTableViewCell.xib in Resources */,
 				BBEEF894192313A7008AA7EF /* TRHomeViewController.xib in Resources */,
+				BB81CE9D192D73740062BCB8 /* TRCamViewController.xib in Resources */,
 				BBEEF8AA19243571008AA7EF /* TRCatchImagePickerViewController.xib in Resources */,
 				BB81CE8E192C270F0062BCB8 /* TRCameraSessionViewController.xib in Resources */,
 				BBEEF872192310B0008AA7EF /* Images.xcassets in Resources */,
@@ -434,6 +443,7 @@
 				BBEEF870192310B0008AA7EF /* TRAppDelegate.m in Sources */,
 				BB488DA7192918B000162FFB /* TRFlyPickerTableViewController.m in Sources */,
 				BBEEF8A419231F61008AA7EF /* TRCatchDetailViewController.m in Sources */,
+				BB81CE9C192D73740062BCB8 /* TRCamViewController.m in Sources */,
 				BBEEF89C192316C4008AA7EF /* TRCatch.m in Sources */,
 				BB488DA31929020B00162FFB /* UIImage+ImageEffects.m in Sources */,
 				BBEEF89819231607008AA7EF /* TRCatchDataEntryViewController.m in Sources */,
@@ -444,8 +454,8 @@
 				BBEEF86C192310B0008AA7EF /* main.m in Sources */,
 				BB81CE8D192C270F0062BCB8 /* TRCameraSessionViewController.m in Sources */,
 				BBEEF8AD192437FC008AA7EF /* TRImageStore.m in Sources */,
+				BB81CEA0192D73950062BCB8 /* TRCamPreviewView.m in Sources */,
 				BB488DAF19295D8600162FFB /* TRCatchTableViewCell.m in Sources */,
-				BB81CE89192C25D90062BCB8 /* AVCamPreviewView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

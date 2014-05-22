@@ -7,7 +7,7 @@
 //
 
 #import "TRCameraSessionViewController.h"
-#import "AVCamPreviewView.h"
+#import "TRCamPreviewView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -16,10 +16,11 @@ static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * RecordingContext = &RecordingContext;
 static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDeviceAuthorizedContext;
 
-@interface TRCameraSessionViewController ()
+@interface TRCameraSessionViewController () <AVCaptureFileOutputRecordingDelegate>
 //outlets
-@property (nonatomic, weak) IBOutlet AVCamPreviewView *previewView;
+@property (nonatomic, weak) IBOutlet TRCamPreviewView *previewView;
 @property (nonatomic, weak) IBOutlet UIButton *snapStillPhotoButton;
+@property (weak, nonatomic) IBOutlet UIButton *recordVideoButton;
 
 //managing AV session
 @property (nonatomic) AVCaptureSession *session;
@@ -32,6 +33,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 
 @property (nonatomic, getter = isDeviceAuthorized) BOOL deviceAuthorized;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
+@property (nonatomic) BOOL lockInterfaceRotation;
 
 @end
 
@@ -50,7 +52,11 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
         self.backgroundRecordingID = UIBackgroundTaskInvalid;
         
         NSError *error = nil;
-        AVCaptureDevice *videoDevice = [self deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
+        
+//        AVCaptureDevice *videoDevice = [AVCamViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
+//		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
+
+        AVCaptureDevice *videoDevice = [TRCameraSessionViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
         AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
         
         if (error) { NSLog(@"%@", error); }
@@ -115,17 +121,45 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (BOOL)prefersStatusBarHidden { return YES; }
 
 //TODO Handle Rotation??
-- (BOOL)shouldAutorotate { return NO; }
+- (BOOL)shouldAutorotate {
+    return !self.lockInterfaceRotation;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+	return UIInterfaceOrientationMaskAll;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+	[[self previewLayer].connection setVideoOrientation:(AVCaptureVideoOrientation)toInterfaceOrientation];
+}
 
 - (AVCaptureVideoPreviewLayer *)previewLayer {
     return (AVCaptureVideoPreviewLayer *)self.previewView.layer;
+}
+
+- (AVCaptureVideoOrientation)currentPreviewOrientation {
+    return (AVCaptureVideoOrientation)[[self previewLayer].connection videoOrientation];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == CapturingStillImageContext) {
 		if ([change[NSKeyValueChangeNewKey] boolValue])
             [self runStillImageCaptureAnimation];
-	} else {
+	} else if (context == RecordingContext) {
+        NSLog(@"observed recording context KVO");
+        BOOL isRecording = [change[NSKeyValueChangeNewKey] boolValue];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (isRecording) {
+                NSLog(@"recording KVO is recording");
+                self.recordVideoButton.titleLabel.text = @"recording, press to stop";
+            } else {
+                NSLog(@"recording KVO is no longer recording");
+                self.recordVideoButton.titleLabel.text = @"record";
+            }
+        });
+    }else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
@@ -148,8 +182,41 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
     });
 }
 
+- (IBAction)toggleMovieRecording:(id)sender {
+    NSLog(@"toggleMoveRecording called");
+    //todo - diisable record button if needed
+    dispatch_async(self.sessionQueue, ^{
+        if (![self.movieFileOutput isRecording]) {
+            NSLog(@"toggleMovieREcording async is not recording");
+            self.lockInterfaceRotation = YES;
+            if ([[UIDevice currentDevice] isMultitaskingSupported]) {
+                self.backgroundRecordingID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+            }
+            
+            //Make sure the movie file output connection has the correct orientation before we record
+            [[self.movieFileOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[self currentPreviewOrientation]];
+            [self disableCameraFlash];
+            
+            NSString *outputFilePath = [NSTemporaryDirectory() stringByAppendingString:@"troutrRecording"];
+            NSLog(@"going to start recording with file output path: %@", outputFilePath);
+            [self.movieFileOutput startRecordingToOutputFileURL:[NSURL fileURLWithPath:outputFilePath] recordingDelegate:self];
+        } else {
+            NSLog(@"toggleMovieREcording async is recording, will stop it");
+            [self.movieFileOutput stopRecording]; //will trigger delegate method which saves file
+        }
+    });
+}
+
 - (IBAction)focusAndExposeTap:(UIGestureRecognizer *)gestureRecognizer {
     //TBD
+}
+
+- (void)longPress:(UILongPressGestureRecognizer *)gr {
+    if (gr.state == UIGestureRecognizerStateBegan) {
+        //start recording
+    } else if (gr.state == UIGestureRecognizerStateEnded) {
+        //end recording
+    }
 }
 
 - (void)subjectAreaDidChange:(NSNotification *)notification {
@@ -186,7 +253,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	});
 }
 
-- (AVCaptureDevice *)deviceWithMediaType:(NSString *)mediaType preferringPosition:(AVCaptureDevicePosition)position {
++ (AVCaptureDevice *)deviceWithMediaType:(NSString *)mediaType preferringPosition:(AVCaptureDevicePosition)position {
 	NSArray *devices = [AVCaptureDevice devicesWithMediaType:mediaType];
 	AVCaptureDevice *captureDevice = [devices firstObject];
 	
@@ -219,6 +286,77 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			});
 		}
 	}];
+}
+
+- (void)disableCameraFlash {
+    [self setFlashMode:AVCaptureFlashModeOff forDevice:self.videoDeviceInput.device];
+}
+
+- (void)enableCameraFlash {
+    [self setFlashMode:AVCaptureFlashModeAuto forDevice:self.videoDeviceInput.device];
+}
+
+- (void)setFlashMode:(AVCaptureFlashMode)flashMode forDevice:(AVCaptureDevice *)device {
+    if ([device hasFlash] && [device isFlashModeSupported:flashMode])
+	{
+		NSError *error = nil;
+		if ([device lockForConfiguration:&error])
+		{
+			[device setFlashMode:flashMode];
+			[device unlockForConfiguration];
+		}
+		else {
+			NSLog(@"%@", error);
+		}
+	}
+}
+
+#pragma mark Video File Output Delegate
+- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error {
+    NSLog(@"capture output called with captureOutput: %@, outputFileUrl: %@, connections: %@, error: %@", captureOutput, outputFileURL, connections, error);
+    if (error) {
+        NSLog(@"error capturing video output: %@", error);
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"recording failed"
+//                                                            message:@"there was an issue recording video. try again."
+//                                                           delegate:self
+//                                                  cancelButtonTitle:@"Cancel"
+//                                                  otherButtonTitles:nil];
+//            [alert show];
+//        });
+//        return;
+    }
+    
+    self.lockInterfaceRotation = NO; //done recording so allow rotation;
+    
+    // Note the backgroundRecordingID for use in the ALAssetsLibrary completion handler to end the background task associated with this recording. This allows a new recording to be started, associated with a new UIBackgroundTaskIdentifier, once the movie file output's -isRecording is back to NO — which happens sometime after this method returns.
+    UIBackgroundTaskIdentifier backgroundRecordingID = self.backgroundRecordingID;
+    self.backgroundRecordingID = UIBackgroundTaskInvalid;
+    
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    NSLog(@"asset library initialized: %@", library);
+    
+    NSLog(@"checking if video is compatible: %hhd", [library videoAtPathIsCompatibleWithSavedPhotosAlbum:outputFileURL]);
+    [library writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:^(NSURL *assetURL, NSError *error) {
+        NSLog(@"library write video at path finished with outputfileurl: %@ and assetUrl: %@", outputFileURL, assetURL);
+        if (error) {
+            NSLog(@"%@", error);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"recording failed"
+                                                            message:@"there was an issue recording video. try again."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        } else {
+            NSLog(@"no error in write video at path to saved photo albuM");
+            //remove the temp video file now that we have saved to asset lib
+            [[NSFileManager defaultManager] removeItemAtURL:outputFileURL error:nil];
+            //halt background recording task
+            if (backgroundRecordingID != UIBackgroundTaskInvalid) { [[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID]; }
+            NSLog(@"finished recording video; asset url is: %@", assetURL);
+//            [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"videoUrl":assetURL}];
+        }
+    }];
 }
 
 #pragma mark UI Animations

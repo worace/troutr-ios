@@ -12,7 +12,6 @@
 #import "TRCatchLog.h"
 #import "TRCatchDetailViewController.h"
 #import "TRCatchTableViewCell.h"
-#import "TRCameraSessionViewController.h"
 #import "TRCameraSessionViewControllerDelegate.h"
 #import "TRCatchDataEntryViewController.h"
 
@@ -59,9 +58,9 @@
 }
 
 - (IBAction)logCatch:(id)sender {
-    TRCameraSessionViewController *cameraSession = [[TRCameraSessionViewController alloc] init];
-    cameraSession.delegate = self;
-    [self.navigationController pushViewController:cameraSession animated:YES];
+//    TRCameraSessionViewController *cameraSession = [[TRCameraSessionViewController alloc] init];
+//    cameraSession.delegate = self;
+//    [self.navigationController pushViewController:cameraSession animated:YES];
 }
 
 - (void)cameraSessionController:(TRCameraSessionViewController *)cameraSessionController didFinishPickingMediaWithInfo:(NSDictionary *)info {

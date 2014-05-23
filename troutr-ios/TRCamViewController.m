@@ -26,6 +26,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 @property (nonatomic, strong) NSDate *recordingStartedTimeStamp;
 
 @property (nonatomic, strong) UIImageView *stillImageInProgress;
+@property (nonatomic, strong) NSURL *videoInProgress;
 
 
 - (IBAction)toggleMovieRecording:(id)sender;
@@ -63,7 +64,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    [self configureNavigationBar];
+    [self hideNavigationBar];
     [self initCaptureSession];
 	[self checkDeviceAuthorizationStatus];
     [self initSerialSessionQueue];
@@ -127,21 +128,6 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			[self runStillImageCaptureAnimation];
 		}
 	}
-	else if (context == RecordingContext)
-	{
-		BOOL isRecording = [change[NSKeyValueChangeNewKey] boolValue];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (isRecording)
-			{
-                [self.screenButton setEnabled:NO];
-			}
-			else
-			{
-                [self.screenButton setEnabled:YES];
-			}
-		});
-	}
 	else if (context == SessionRunningAndDeviceAuthorizedContext)
 	{
 		BOOL isRunning = [change[NSKeyValueChangeNewKey] boolValue];
@@ -186,8 +172,6 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
               options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningAndDeviceAuthorizedContext];
     [self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage"
               options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
-    [self addObserver:self forKeyPath:@"movieFileOutput.recording"
-              options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:RecordingContext];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(subjectAreaDidChange:)
                                                  name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[[self videoDeviceInput] device]];
 }
@@ -197,7 +181,6 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
     [[NSNotificationCenter defaultCenter] removeObserver:[self runtimeErrorHandlingObserver]];
     [self removeObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized" context:SessionRunningAndDeviceAuthorizedContext];
     [self removeObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
-    [self removeObserver:self forKeyPath:@"movieFileOutput.recording" context:RecordingContext];
 }
 
 - (void)registerVideoDeviceWithSession {
@@ -279,10 +262,6 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
     [self.screenButton addGestureRecognizer:tapGesture];
 }
 
-- (void)configureNavigationBar {
-    [[self navigationController] setNavigationBarHidden:YES animated:NO];
-}
-
 #pragma mark Actions
 
 - (IBAction)toggleMovieRecording:(id)sender
@@ -303,13 +282,18 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			// Turning OFF flash for video recording
 			[TRCamViewController setFlashMode:AVCaptureFlashModeOff forDevice:[[self videoDeviceInput] device]];
 			
-			// Start recording to a temporary file.
+			// Start recording to a temporary file.; clear it first to make sure we have a clean slate
+            [self clearVideoInProgressTempFile];
 			NSString *outputFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[@"movie" stringByAppendingPathExtension:@"mov"]];
 			[[self movieFileOutput] startRecordingToOutputFileURL:[NSURL fileURLWithPath:outputFilePath] recordingDelegate:self];
 		}
 		else
 		{
 			[[self movieFileOutput] stopRecording];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.screenButton.enabled = NO;//stop recording; go into confirm; don't allow button
+            });
+
 		}
 	});
 }
@@ -329,6 +313,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
     [self.recordingProgressTimer invalidate];
     self.recordingProgressTimer = nil;
     self.recordingStartedTimeStamp = nil;
+    [self.progressView removeFromSuperview];
     self.progressView = nil;
 }
 
@@ -351,59 +336,15 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
             
             // Capture a still image.
             [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-                
-                if (imageDataSampleBuffer)
-                {
+                if (imageDataSampleBuffer) {
                     NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                    
-                    UIImage *image = [[UIImage alloc] initWithData:imageData];
-                    
-                    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-                    imageView.frame = self.view.frame;
-                    
-                    self.stillImageInProgress = imageView;
-                    [self.view addSubview:imageView];
-                    
-                    [[self navigationController].navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-                    [self navigationController].navigationBar.shadowImage = [UIImage new];
-                    [self navigationController].navigationBar.translucent = YES;
-                    [[self navigationController] setNavigationBarHidden:NO animated:NO];
-                    
-                    UIBarButtonItem *cancel = [[UIBarButtonItem alloc]
-                                                   initWithTitle:@"cancel"
-                                                   style:UIBarButtonItemStyleBordered
-                                                   target:self
-                                                   action:@selector(cancelStillImage)];
-                    self.navigationItem.leftBarButtonItem = cancel;
-                    
-                    UIBarButtonItem *confirm = [[UIBarButtonItem alloc]
-                                               initWithTitle:@"confirm"
-                                               style:UIBarButtonItemStyleBordered
-                                               target:self
-                                               action:@selector(confirmStillImage)];
-                    self.navigationItem.rightBarButtonItem = confirm;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self displayStillImageConfirmationModeUIForImageData:imageData];
+                    });
                 }
             }];
         });
     }
-}
-
-- (void)cancelStillImage {
-    NSLog(@"cancel");
-    [self.stillImageInProgress removeFromSuperview];
-    self.stillImageInProgress = nil;
-    [[self navigationController] setNavigationBarHidden:YES animated:NO];
-}
-
-- (void)confirmStillImage {
-    UIImage *image = self.stillImageInProgress.image;
-    NSLog(@"confirm; image is %@", image);
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
-        NSLog(@"finished writing still image to photo library");
-    });
-    [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"image":image}];
-
 }
 
 - (IBAction)focusAndExposeTap:(UIGestureRecognizer *)gestureRecognizer
@@ -427,28 +368,80 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
         [self toggleMovieRecording:nil];
     }
 }
+
+- (void)videoInProgressPlayerReachedEnd:(NSNotification *)notification {
+    NSLog(@"player reached end");
+    AVPlayerItem *playerItem = [notification object];
+    if (playerItem) {
+        [playerItem seekToTime:kCMTimeZero];
+    }
+}
+
 #pragma mark File Output Delegate
 // for video output
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
 {
-	if (error)
-		NSLog(@"%@", error);
-	
-	[self setLockInterfaceRotation:NO];
-	
-	// Note the backgroundRecordingID for use in the ALAssetsLibrary completion handler to end the background task associated with this recording. This allows a new recording to be started, associated with a new UIBackgroundTaskIdentifier, once the movie file output's -isRecording is back to NO — which happens sometime after this method returns.
+
+    if (!self.videoInProgress) {
+        self.videoInProgress = outputFileURL;
+        NSLog(@"captured output; setting output url: %@", outputFileURL);
+        if (error)
+            NSLog(@"%@", error);
+        
+        [self setLockInterfaceRotation:NO];
+        
+        [self displayVideoConfirmationModeUI];
+    }
+}
+
+#pragma mark Media Cancel Confirm
+- (void)confirmVideo {
+    NSLog(@"confirm video!");
+    [self writeVideoInProgressToCameraRoll];
+}
+
+- (void)cancelVideo {
+    NSLog(@"cancel video");
+    [self hideNavigationBar];
+    [[self.view.layer.sublayers lastObject] removeFromSuperlayer];
+    [self resetProgressBar];
+    self.screenButton.enabled = YES;//cancelling video; re-enable screen interaction
+    [self clearVideoInProgressTempFile];
+}
+
+- (void)cancelStillImage {
+    NSLog(@"cancel");
+    [self.stillImageInProgress removeFromSuperview];
+    self.stillImageInProgress = nil;
+    [[self navigationController] setNavigationBarHidden:YES animated:NO];
+}
+
+- (void)confirmStillImage {
+    UIImage *image = self.stillImageInProgress.image;
+    NSLog(@"confirm; image is %@", image);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
+        NSLog(@"finished writing still image to photo library");
+    });
+    [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"image":image}];
+    
+}
+
+- (void)writeVideoInProgressToCameraRoll {
+    // Note the backgroundRecordingID for use in the ALAssetsLibrary completion handler to end the background task associated with this recording. This allows a new recording to be started, associated with a new UIBackgroundTaskIdentifier, once the movie file output's -isRecording is back to NO — which happens sometime after this method returns.
 	UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
 	[self setBackgroundRecordingID:UIBackgroundTaskInvalid];
 	NSLog(@"ready to begin writing to asset lib");
-	[[[ALAssetsLibrary alloc] init] writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:^(NSURL *assetURL, NSError *error) {
+	[[[ALAssetsLibrary alloc] init] writeVideoAtPathToSavedPhotosAlbum:self.videoInProgress completionBlock:^(NSURL *assetURL, NSError *error) {
 		if (error)
 			NSLog(@"%@", error);
-		
-		[[NSFileManager defaultManager] removeItemAtURL:outputFileURL error:nil];
+        
+        [self clearVideoInProgressTempFile];
 		
 		if (backgroundRecordingID != UIBackgroundTaskInvalid)
 			[[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID];
         NSLog(@"finished writing video, asset url is: %@", assetURL);
+        [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"videoAssetUrl":assetURL}];
 	}];
 }
 
@@ -551,5 +544,81 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 		}
 	}];
 }
+
+- (void)hideNavigationBar {
+    [[self navigationController] setNavigationBarHidden:YES animated:NO];
+}
+
+- (void)displayVideoConfirmationModeUI {
+    AVPlayer *player = [AVPlayer playerWithURL:self.videoInProgress];
+    player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoInProgressPlayerReachedEnd:)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:[player currentItem]];
+    
+    AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
+    layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    layer.frame = self.view.frame;
+    [self.view.layer addSublayer:layer];
+    [player play];
+
+    
+    [[self navigationController].navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self navigationController].navigationBar.shadowImage = [UIImage new];
+    [self navigationController].navigationBar.translucent = YES;
+    [[self navigationController] setNavigationBarHidden:NO animated:NO];
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc]
+                               initWithTitle:@"cancel"
+                               style:UIBarButtonItemStyleBordered
+                               target:self
+                               action:@selector(cancelVideo)];
+    self.navigationItem.leftBarButtonItem = cancel;
+    
+    UIBarButtonItem *confirm = [[UIBarButtonItem alloc]
+                                initWithTitle:@"confirm"
+                                style:UIBarButtonItemStyleBordered
+                                target:self
+                                action:@selector(confirmVideo)];
+    self.navigationItem.rightBarButtonItem = confirm;
+}
+
+- (void)displayStillImageConfirmationModeUIForImageData:(NSData *)imageData {
+    UIImage *image = [[UIImage alloc] initWithData:imageData];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.frame = self.view.frame;
+    
+    self.stillImageInProgress = imageView;
+    [self.view addSubview:imageView];
+    
+    [[self navigationController].navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self navigationController].navigationBar.shadowImage = [UIImage new];
+    [self navigationController].navigationBar.translucent = YES;
+    [[self navigationController] setNavigationBarHidden:NO animated:NO];
+    
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc]
+                               initWithTitle:@"cancel"
+                               style:UIBarButtonItemStyleBordered
+                               target:self
+                               action:@selector(cancelStillImage)];
+    self.navigationItem.leftBarButtonItem = cancel;
+    
+    UIBarButtonItem *confirm = [[UIBarButtonItem alloc]
+                                initWithTitle:@"confirm"
+                                style:UIBarButtonItemStyleBordered
+                                target:self
+                                action:@selector(confirmStillImage)];
+    self.navigationItem.rightBarButtonItem = confirm;
+}
+
+#pragma mark Utility / Helper
+
+- (void)clearVideoInProgressTempFile {
+    [[NSFileManager defaultManager] removeItemAtURL:self.videoInProgress error:nil];
+    self.videoInProgress = nil;
+}
+
 
 @end

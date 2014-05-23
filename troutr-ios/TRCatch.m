@@ -16,6 +16,7 @@
     [aCoder encodeObject:self.uid forKey:@"uid"];
     [aCoder encodeObject:self.location forKey:@"location"];
     [aCoder encodeObject:self.dateCreated forKey:@"dateCreated"];
+    [aCoder encodeObject:self.videoAssetURL forKey:@"videoAssetURL"];
 }
 -(instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
@@ -25,6 +26,7 @@
         _uid = [aDecoder decodeObjectForKey:@"uid"];
         _location = [aDecoder decodeObjectForKey:@"location"];
         _dateCreated = [aDecoder decodeObjectForKey:@"dateCreated"];
+        _videoAssetURL = [aDecoder decodeObjectForKey:@"videoAssetURL"];
     }
     return self;
 }

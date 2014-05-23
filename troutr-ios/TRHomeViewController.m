@@ -66,12 +66,16 @@
 
 - (void)cameraSessionController:(TRCamViewController *)cameraSessionController didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSLog(@"camera session returned with info %@", info);
-//    UIImage *image = info[@"image"];
-//    TRCatch *catch = [[TRCatch alloc] init];
-//    catch.image = image;
-//    TRCatchDataEntryViewController *dataEntry = [[TRCatchDataEntryViewController alloc] init];
-//    dataEntry.catchInProgress = catch;
-//    [self.navigationController pushViewController:dataEntry animated:YES];
+      TRCatch *catch = [[TRCatch alloc] init];
+
+    if (info[@"image"]) {
+        catch.image = info[@"image"];
+    } else if (info[@"videoAssetURL"]) {
+        
+    }
+    TRCatchDataEntryViewController *dataEntry = [[TRCatchDataEntryViewController alloc] init];
+    dataEntry.catchInProgress = catch;
+    [self.navigationController pushViewController:dataEntry animated:YES];
 }
 
 # pragma - mark UITableView

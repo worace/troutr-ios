@@ -86,6 +86,9 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
         [self registerRuntimeErrorHandler];
 		[[self session] startRunning];
 	});
+    if (self.videoInProgress || self.stillImageInProgress) {
+        self.screenButton.enabled = NO;
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -130,19 +133,20 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	}
 	else if (context == SessionRunningAndDeviceAuthorizedContext)
 	{
-		BOOL isRunning = [change[NSKeyValueChangeNewKey] boolValue];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (isRunning)
-			{
-                [self.screenButton setEnabled:YES];
-
-			}
-			else
-			{
-                [self.screenButton setEnabled:NO];
-			}
-		});
+        NSLog(@"session running observation");
+//		BOOL isRunning = [change[NSKeyValueChangeNewKey] boolValue];
+//		
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			if (isRunning)
+//			{
+//                [self.screenButton setEnabled:YES];
+//
+//			}
+//			else
+//			{
+//                [self.screenButton setEnabled:NO];
+//			}
+//		});
 	}
 	else
 	{
@@ -411,6 +415,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 
 - (void)cancelStillImage {
     NSLog(@"cancel");
+    self.screenButton.enabled = YES;
     [self.stillImageInProgress removeFromSuperview];
     self.stillImageInProgress = nil;
     [[self navigationController] setNavigationBarHidden:YES animated:NO];
@@ -441,7 +446,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 		if (backgroundRecordingID != UIBackgroundTaskInvalid)
 			[[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID];
         NSLog(@"finished writing video, asset url is: %@", assetURL);
-        [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"videoAssetUrl":assetURL}];
+        [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"videoAssetURL":assetURL}];
 	}];
 }
 

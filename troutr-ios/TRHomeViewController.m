@@ -71,7 +71,7 @@
     if (info[@"image"]) {
         catch.image = info[@"image"];
     } else if (info[@"videoAssetURL"]) {
-        
+        catch.videoAssetURL = info[@"videoAssetURL"];
     }
     TRCatchDataEntryViewController *dataEntry = [[TRCatchDataEntryViewController alloc] init];
     dataEntry.catchInProgress = catch;

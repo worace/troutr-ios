@@ -374,7 +374,6 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 }
 
 - (void)videoInProgressPlayerReachedEnd:(NSNotification *)notification {
-    NSLog(@"player reached end");
     AVPlayerItem *playerItem = [notification object];
     if (playerItem) {
         [playerItem seekToTime:kCMTimeZero];
@@ -433,21 +432,23 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 }
 
 - (void)writeVideoInProgressToCameraRoll {
-    // Note the backgroundRecordingID for use in the ALAssetsLibrary completion handler to end the background task associated with this recording. This allows a new recording to be started, associated with a new UIBackgroundTaskIdentifier, once the movie file output's -isRecording is back to NO — which happens sometime after this method returns.
-	UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
-	[self setBackgroundRecordingID:UIBackgroundTaskInvalid];
-	NSLog(@"ready to begin writing to asset lib");
-	[[[ALAssetsLibrary alloc] init] writeVideoAtPathToSavedPhotosAlbum:self.videoInProgress completionBlock:^(NSURL *assetURL, NSError *error) {
-		if (error)
-			NSLog(@"%@", error);
-        
-        [self clearVideoInProgressTempFile];
-		
-		if (backgroundRecordingID != UIBackgroundTaskInvalid)
-			[[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID];
-        NSLog(@"finished writing video, asset url is: %@", assetURL);
-        [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"videoAssetURL":assetURL}];
-	}];
+    if (self.videoInProgress) {
+        // Note the backgroundRecordingID for use in the ALAssetsLibrary completion handler to end the background task associated with this recording. This allows a new recording to be started, associated with a new UIBackgroundTaskIdentifier, once the movie file output's -isRecording is back to NO — which happens sometime after this method returns.
+        UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
+        [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
+        NSLog(@"ready to begin writing to asset lib");
+        [[[ALAssetsLibrary alloc] init] writeVideoAtPathToSavedPhotosAlbum:self.videoInProgress completionBlock:^(NSURL *assetURL, NSError *error) {
+            if (error)
+                NSLog(@"%@", error);
+            
+            [self clearVideoInProgressTempFile];
+            
+            if (backgroundRecordingID != UIBackgroundTaskInvalid)
+                [[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID];
+            NSLog(@"finished writing video, asset url is: %@", assetURL);
+            [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"videoAssetURL":assetURL}];
+        }];
+    }
 }
 
 #pragma mark Device Configuration

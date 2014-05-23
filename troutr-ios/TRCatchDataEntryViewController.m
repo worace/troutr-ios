@@ -11,6 +11,7 @@
 #import "TRCatchDetailViewController.h"
 #import "TRFlyPickerTableViewController.h"
 #import "UIImage+ImageEffects.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface TRCatchDataEntryViewController () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, TRFlyPickerDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) UIPickerView *speciesPicker;
@@ -36,32 +37,72 @@
     self.flyField.delegate = self;
 }
 
-- (void)initCatchImageView {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        UIImage *imageForBackground = nil;
-        if (self.catchInProgress.image) {
-            NSDate *start = [NSDate date];
-            imageForBackground = [self.catchInProgress.image applyLightEffect];
-            NSLog(@"elapsed time on light effect: %f", [[NSDate date] timeIntervalSinceDate:start]);
-        } else {
-            imageForBackground = [[UIImage imageNamed:@"defaultCatchBackground"] applyLightEffect];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.catchImageView.contentMode = UIViewContentModeScaleAspectFill;
-            self.catchImageView.alpha = 0.0;
-            self.catchImageView.image = imageForBackground;
-            [UIView animateWithDuration:0.7 animations:^{
-                self.catchImageView.alpha = 1.0;
-            }];
-        });
+- (void)initCatchImageViewWithImage:(UIImage *)image {
+//    UIImage *imageForBackground = nil;
+//    if (self.catchInProgress.image) {
+//        NSDate *start = [NSDate date];
+//        imageForBackground = [self.catchInProgress.image applyLightEffect];
+//        NSLog(@"elapsed time on light effect: %f", [[NSDate date] timeIntervalSinceDate:start]);
+//    } else {
+//    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.catchImageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.catchImageView.alpha = 0.0;
+        self.catchImageView.image = image;
+        [UIView animateWithDuration:0.7 animations:^{
+            self.catchImageView.alpha = 1.0;
+        }];
     });
+}
+
+- (void)playerReachedEnd:(NSNotification *)notification {
+//    NSLog(@"player reached end");
+//    AVPlayerItem *playerItem = [notification object];
+//    if (playerItem) {
+//        [playerItem seekToTime:kCMTimeZero];
+//    }
+}
+
+- (void)initCatchVideoViewWithURL:(NSURL *)assetURL {
+    NSLog(@"init catch video with url: %@", assetURL);
+    AVPlayer *player = [AVPlayer playerWithURL:assetURL];
+    player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(playerReachedEnd:)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:[player currentItem]];
+    
+    AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
+    layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    layer.frame = self.view.frame;
+//    [self.view.layer insertSublayer:layer above:self.catchImageView.layer];
+    [self.view.layer insertSublayer:layer atIndex:1];
+    [self.view bringSubviewToFront:self.speciesField];
+
+    [player play];
+}
+
+- (void)initBackgroundDisplay {
+    NSLog(@"init background display; video url is %@", self.catchInProgress.videoAssetURL);
+    if (self.catchInProgress.image) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [self initCatchImageViewWithImage:[self.catchInProgress.image applyLightEffect]];
+        });
+
+    } else if (self.catchInProgress.videoAssetURL) {
+        [self initCatchVideoViewWithURL:self.catchInProgress.videoAssetURL];
+        
+    } else {
+        UIImage *defaultImage = [[UIImage imageNamed:@"defaultCatchBackground"] applyLightEffect];
+        [self initCatchImageViewWithImage:defaultImage];
+    }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initSpeciesPicker];
-    //TODO -- figure out why image view loads so slow coming out of camera session
-    [self initCatchImageView];
+    [self initBackgroundDisplay];
     [self initFlyField];
     [self initLocationTracking];
 }

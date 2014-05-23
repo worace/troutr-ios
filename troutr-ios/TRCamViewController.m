@@ -341,61 +341,58 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 
 - (IBAction)snapStillImage:(id)sender
 {
-	dispatch_async([self sessionQueue], ^{
-		// Update the orientation on the still image output video connection before capturing.
-		[[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] videoOrientation]];
-		
-		// Flash set to Auto for Still Capture
-		[TRCamViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[[self videoDeviceInput] device]];
-		
-		// Capture a still image.
-		[[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-			
-			if (imageDataSampleBuffer)
-			{
-				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+    if (!self.stillImageInProgress) {
+        dispatch_async([self sessionQueue], ^{
+            // Update the orientation on the still image output video connection before capturing.
+            [[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] videoOrientation]];
+            
+            // Flash set to Auto for Still Capture
+            [TRCamViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[[self videoDeviceInput] device]];
+            
+            // Capture a still image.
+            [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
                 
-				UIImage *image = [[UIImage alloc] initWithData:imageData];
-                
-                UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-                imageView.frame = self.view.frame;
-
-//                UIButton *button = [[UIButton alloc] init];
-//                button.frame = CGRectMake(0, 0, 100, 100);
-//                [button setTitle:@"back" forState:UIControlStateNormal];
-//                [button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-//                [imageContainer addSubview:button];
-                
-                self.stillImageInProgress = imageView;
-                [self.view addSubview:imageView];
-                
-                [[self navigationController].navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-                [self navigationController].navigationBar.shadowImage = [UIImage new];
-                [self navigationController].navigationBar.translucent = YES;
-                [[self navigationController] setNavigationBarHidden:NO animated:NO];
-                
-                UIBarButtonItem *cancel = [[UIBarButtonItem alloc]
-                                               initWithTitle:@"cancel"
+                if (imageDataSampleBuffer)
+                {
+                    NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+                    
+                    UIImage *image = [[UIImage alloc] initWithData:imageData];
+                    
+                    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+                    imageView.frame = self.view.frame;
+                    
+                    self.stillImageInProgress = imageView;
+                    [self.view addSubview:imageView];
+                    
+                    [[self navigationController].navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+                    [self navigationController].navigationBar.shadowImage = [UIImage new];
+                    [self navigationController].navigationBar.translucent = YES;
+                    [[self navigationController] setNavigationBarHidden:NO animated:NO];
+                    
+                    UIBarButtonItem *cancel = [[UIBarButtonItem alloc]
+                                                   initWithTitle:@"cancel"
+                                                   style:UIBarButtonItemStyleBordered
+                                                   target:self
+                                                   action:@selector(cancelStillImage)];
+                    self.navigationItem.leftBarButtonItem = cancel;
+                    
+                    UIBarButtonItem *confirm = [[UIBarButtonItem alloc]
+                                               initWithTitle:@"confirm"
                                                style:UIBarButtonItemStyleBordered
                                                target:self
-                                               action:@selector(cancelStillImage)];
-                self.navigationItem.leftBarButtonItem = cancel;
-                
-                UIBarButtonItem *confirm = [[UIBarButtonItem alloc]
-                                           initWithTitle:@"confirm"
-                                           style:UIBarButtonItemStyleBordered
-                                           target:self
-                                           action:@selector(confirmStillImage)];
-                self.navigationItem.rightBarButtonItem = confirm;
-			}
-		}];
-	});
+                                               action:@selector(confirmStillImage)];
+                    self.navigationItem.rightBarButtonItem = confirm;
+                }
+            }];
+        });
+    }
 }
 
 - (void)cancelStillImage {
     NSLog(@"cancel");
     [self.stillImageInProgress removeFromSuperview];
     self.stillImageInProgress = nil;
+    [[self navigationController] setNavigationBarHidden:YES animated:NO];
 }
 
 - (void)confirmStillImage {

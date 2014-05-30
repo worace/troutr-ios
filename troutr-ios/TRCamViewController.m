@@ -11,10 +11,13 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "TRCamPreviewView.h"
+#import "TRImagePreviewViewController.h"
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * RecordingContext = &RecordingContext;
 static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDeviceAuthorizedContext;
+static void * ConfirmedMediaSelectionContext = &ConfirmedMediaSelectionContext;
+
 
 @interface TRCamViewController () <AVCaptureFileOutputRecordingDelegate, UIGestureRecognizerDelegate>
 
@@ -25,7 +28,6 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 @property (nonatomic, strong) NSTimer *recordingProgressTimer;
 @property (nonatomic, strong) NSDate *recordingStartedTimeStamp;
 
-@property (nonatomic, strong) UIImageView *stillImageInProgress;
 @property (nonatomic, strong) NSURL *videoInProgress;
 
 
@@ -64,7 +66,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    [self hideNavigationBar];
+    [self configureTransparentNavigationBar];
     [self initCaptureSession];
 	[self checkDeviceAuthorizationStatus];
     [self initSerialSessionQueue];
@@ -82,11 +84,11 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (void)viewWillAppear:(BOOL)animated
 {
 	dispatch_async([self sessionQueue], ^{
-        [self addKVOAndNotificationObservers];
+        [self registerKVOAndNotificationObservers];
         [self registerRuntimeErrorHandler];
 		[[self session] startRunning];
 	});
-    if (self.videoInProgress || self.stillImageInProgress) {
+    if (self.videoInProgress) {
         self.screenButton.enabled = NO;
     }
 }
@@ -94,7 +96,6 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (void)viewDidDisappear:(BOOL)animated
 {
 	dispatch_async([self sessionQueue], ^{
-		[[self session] stopRunning];
 		[self removeKVOAndNotificationObservers];
 	});
 }
@@ -147,7 +148,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 //                [self.screenButton setEnabled:NO];
 //			}
 //		});
-	}
+    }
 	else
 	{
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -171,13 +172,16 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	[self setSessionQueue:sessionQueue];
 }
 
-- (void)addKVOAndNotificationObservers {
+- (void)registerKVOAndNotificationObservers {
     [self addObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized"
               options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningAndDeviceAuthorizedContext];
     [self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage"
               options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(subjectAreaDidChange:)
                                                  name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[[self videoDeviceInput] device]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopCameraSession:)
+                                                 name:@"TRCameraSessionConfirmedMediaSelection" object:nil];
+
 }
 
 - (void)removeKVOAndNotificationObservers {
@@ -330,25 +334,23 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 
 - (IBAction)snapStillImage:(id)sender
 {
-    if (!self.stillImageInProgress) {
-        dispatch_async([self sessionQueue], ^{
-            // Update the orientation on the still image output video connection before capturing.
-            [[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] videoOrientation]];
-            
-            // Flash set to Auto for Still Capture
-            [TRCamViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[[self videoDeviceInput] device]];
-            
-            // Capture a still image.
-            [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-                if (imageDataSampleBuffer) {
-                    NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self displayStillImageConfirmationModeUIForImageData:imageData];
-                    });
-                }
-            }];
-        });
-    }
+    dispatch_async([self sessionQueue], ^{
+        // Update the orientation on the still image output video connection before capturing.
+        [[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] videoOrientation]];
+        
+        // Flash set to Auto for Still Capture
+        [TRCamViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[[self videoDeviceInput] device]];
+        
+        // Capture a still image.
+        [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+            if (imageDataSampleBuffer) {
+                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self displayStillImageConfirmationModeUIForImageData:imageData];
+                });
+            }
+        }];
+    });
 }
 
 - (IBAction)focusAndExposeTap:(UIGestureRecognizer *)gestureRecognizer
@@ -380,6 +382,10 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
     }
 }
 
+- (void)stopCameraSession:(id)sender {
+    [self.session stopRunning];
+}
+
 #pragma mark File Output Delegate
 // for video output
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
@@ -405,31 +411,13 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 
 - (void)cancelVideo {
     NSLog(@"cancel video");
-    [self hideNavigationBar];
+    [self configureTransparentNavigationBar];
     [[self.view.layer.sublayers lastObject] removeFromSuperlayer];
     [self resetProgressBar];
     self.screenButton.enabled = YES;//cancelling video; re-enable screen interaction
     [self clearVideoInProgressTempFile];
 }
 
-- (void)cancelStillImage {
-    NSLog(@"cancel");
-    self.screenButton.enabled = YES;
-    [self.stillImageInProgress removeFromSuperview];
-    self.stillImageInProgress = nil;
-    [[self navigationController] setNavigationBarHidden:YES animated:NO];
-}
-
-- (void)confirmStillImage {
-    UIImage *image = self.stillImageInProgress.image;
-    NSLog(@"confirm; image is %@", image);
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
-        NSLog(@"finished writing still image to photo library");
-    });
-    [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"image":image}];
-    
-}
 
 - (void)writeVideoInProgressToCameraRoll {
     if (self.videoInProgress) {
@@ -555,6 +543,19 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
     [[self navigationController] setNavigationBarHidden:YES animated:NO];
 }
 
+- (void)configureTransparentNavigationBar {
+    [[self navigationController].navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self navigationController].navigationBar.shadowImage = [UIImage new];
+    [self navigationController].navigationBar.translucent = YES;
+//    UIBarButtonItem *cancel = [[UIBarButtonItem alloc]
+//                               initWithTitle:@"cancel"
+//                               style:UIBarButtonItemStyleBordered
+//                               target:self
+//                               action:@selector(cancelVideo)];
+//    self.navigationItem.leftBarButtonItem = cancel;
+
+}
+
 - (void)displayVideoConfirmationModeUI {
     AVPlayer *player = [AVPlayer playerWithURL:self.videoInProgress];
     player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
@@ -592,31 +593,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 
 - (void)displayStillImageConfirmationModeUIForImageData:(NSData *)imageData {
     UIImage *image = [[UIImage alloc] initWithData:imageData];
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.frame = self.view.frame;
-    
-    self.stillImageInProgress = imageView;
-    [self.view addSubview:imageView];
-    
-    [[self navigationController].navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    [self navigationController].navigationBar.shadowImage = [UIImage new];
-    [self navigationController].navigationBar.translucent = YES;
-    [[self navigationController] setNavigationBarHidden:NO animated:NO];
-    
-    UIBarButtonItem *cancel = [[UIBarButtonItem alloc]
-                               initWithTitle:@"cancel"
-                               style:UIBarButtonItemStyleBordered
-                               target:self
-                               action:@selector(cancelStillImage)];
-    self.navigationItem.leftBarButtonItem = cancel;
-    
-    UIBarButtonItem *confirm = [[UIBarButtonItem alloc]
-                                initWithTitle:@"confirm"
-                                style:UIBarButtonItemStyleBordered
-                                target:self
-                                action:@selector(confirmStillImage)];
-    self.navigationItem.rightBarButtonItem = confirm;
+    TRImagePreviewViewController *preview = [[TRImagePreviewViewController alloc] initWithImage:image];
+    [[self navigationController] pushViewController:preview animated:NO];
 }
 
 #pragma mark Utility / Helper

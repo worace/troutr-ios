@@ -20,6 +20,7 @@
 		BB81CE9C192D73740062BCB8 /* TRCamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE9A192D73740062BCB8 /* TRCamViewController.m */; };
 		BB81CE9D192D73740062BCB8 /* TRCamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB81CE9B192D73740062BCB8 /* TRCamViewController.xib */; };
 		BB81CEA0192D73950062BCB8 /* TRCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */; };
+		BBEAD98C19380E6700395AEB /* TRImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */; };
 		BBEEF860192310B0008AA7EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF85F192310B0008AA7EF /* Foundation.framework */; };
 		BBEEF862192310B0008AA7EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF861192310B0008AA7EF /* CoreGraphics.framework */; };
 		BBEEF864192310B0008AA7EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF863192310B0008AA7EF /* UIKit.framework */; };
@@ -77,6 +78,8 @@
 		BB81CE9B192D73740062BCB8 /* TRCamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCamViewController.xib; sourceTree = "<group>"; };
 		BB81CE9E192D73950062BCB8 /* TRCamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCamPreviewView.h; sourceTree = "<group>"; };
 		BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCamPreviewView.m; sourceTree = "<group>"; };
+		BBEAD98A19380E6700395AEB /* TRImagePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRImagePreviewViewController.h; path = "troutr-ios/TRImagePreviewViewController.h"; sourceTree = "<group>"; };
+		BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRImagePreviewViewController.m; path = "troutr-ios/TRImagePreviewViewController.m"; sourceTree = "<group>"; };
 		BBEEF85C192310B0008AA7EF /* troutr-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "troutr-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBEEF85F192310B0008AA7EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BBEEF861192310B0008AA7EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -201,6 +204,8 @@
 		BBEEF853192310B0008AA7EF = {
 			isa = PBXGroup;
 			children = (
+				BBEAD98A19380E6700395AEB /* TRImagePreviewViewController.h */,
+				BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */,
 				BBEEF865192310B0008AA7EF /* troutr-ios */,
 				BBEEF87E192310B0008AA7EF /* troutr-iosTests */,
 				BBEEF85D192310B0008AA7EF /* Products */,
@@ -439,6 +444,7 @@
 				BB488DA7192918B000162FFB /* TRFlyPickerTableViewController.m in Sources */,
 				BBEEF8A419231F61008AA7EF /* TRCatchDetailViewController.m in Sources */,
 				BB81CE9C192D73740062BCB8 /* TRCamViewController.m in Sources */,
+				BBEAD98C19380E6700395AEB /* TRImagePreviewViewController.m in Sources */,
 				BBEEF89C192316C4008AA7EF /* TRCatch.m in Sources */,
 				BB488DA31929020B00162FFB /* UIImage+ImageEffects.m in Sources */,
 				BBEEF89819231607008AA7EF /* TRCatchDataEntryViewController.m in Sources */,

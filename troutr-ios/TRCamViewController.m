@@ -12,6 +12,7 @@
 
 #import "TRCamPreviewView.h"
 #import "TRImagePreviewViewController.h"
+#import "TRVideoPreviewViewController.h"
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * RecordingContext = &RecordingContext;
@@ -30,8 +31,6 @@ static void * ConfirmedMediaSelectionContext = &ConfirmedMediaSelectionContext;
 
 @property (nonatomic, strong) NSURL *videoInProgress;
 
-
-- (IBAction)toggleMovieRecording:(id)sender;
 - (IBAction)snapStillImage:(id)sender;
 - (IBAction)focusAndExposeTap:(UIGestureRecognizer *)gestureRecognizer;
 
@@ -88,9 +87,6 @@ static void * ConfirmedMediaSelectionContext = &ConfirmedMediaSelectionContext;
         [self registerRuntimeErrorHandler];
 		[[self session] startRunning];
 	});
-    if (self.videoInProgress) {
-        self.screenButton.enabled = NO;
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -272,38 +268,37 @@ static void * ConfirmedMediaSelectionContext = &ConfirmedMediaSelectionContext;
 
 #pragma mark Actions
 
-- (IBAction)toggleMovieRecording:(id)sender
-{
-	dispatch_async([self sessionQueue], ^{
-		if (![[self movieFileOutput] isRecording]) {
-			[self setLockInterfaceRotation:YES];
-			
-			if ([[UIDevice currentDevice] isMultitaskingSupported])
-			{
-				// Setup background task. This is needed because the captureOutput:didFinishRecordingToOutputFileAtURL: callback is not received until AVCam returns to the foreground unless you request background execution time. This also ensures that there will be time to write the file to the assets library when AVCam is backgrounded. To conclude this background execution, -endBackgroundTask is called in -recorder:recordingDidFinishToOutputFileURL:error: after the recorded file has been saved.
-				[self setBackgroundRecordingID:[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil]];
-			}
-			
-			// Update the orientation on the movie file output video connection before starting recording.
-			[[[self movieFileOutput] connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] videoOrientation]];
-			
-			// Turning OFF flash for video recording
-			[TRCamViewController setFlashMode:AVCaptureFlashModeOff forDevice:[[self videoDeviceInput] device]];
-			
-			// Start recording to a temporary file.; clear it first to make sure we have a clean slate
-            [self clearVideoInProgressTempFile];
-			NSString *outputFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[@"movie" stringByAppendingPathExtension:@"mov"]];
-			[[self movieFileOutput] startRecordingToOutputFileURL:[NSURL fileURLWithPath:outputFilePath] recordingDelegate:self];
-		}
-		else
-		{
-			[[self movieFileOutput] stopRecording];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.screenButton.enabled = NO;//stop recording; go into confirm; don't allow button
-            });
+- (void)startMovieRecording {
+    dispatch_async(self.sessionQueue, ^{
+        if (![[self movieFileOutput] isRecording]) {
+            NSLog(@"starting recording");
+            [self setLockInterfaceRotation:YES];
+            
+            if ([[UIDevice currentDevice] isMultitaskingSupported])
+            {
+                // Setup background task. This is needed because the captureOutput:didFinishRecordingToOutputFileAtURL: callback is not received until AVCam returns to the foreground unless you request background execution time. This also ensures that there will be time to write the file to the assets library when AVCam is backgrounded. To conclude this background execution, -endBackgroundTask is called in -recorder:recordingDidFinishToOutputFileURL:error: after the recorded file has been saved.
+                self.backgroundRecordingID = [[UIApplication sharedApplication] beginBackgroundTaskWithName:@"recordVideoToTempFile" expirationHandler:nil];
+            }
+            
+            // Update the orientation on the movie file output video connection before starting recording.
+            [[[self movieFileOutput] connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] videoOrientation]];
+            
+            // Turning OFF flash for video recording
+            [TRCamViewController setFlashMode:AVCaptureFlashModeOff forDevice:[[self videoDeviceInput] device]];
+            
+            // Start recording to a temporary file.; clear it first to make sure we have a clean slate
+            NSString *filename = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970] ];
+            NSString *outputFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[filename stringByAppendingPathExtension:@"mov"]];
+            [[self movieFileOutput] startRecordingToOutputFileURL:[NSURL fileURLWithPath:outputFilePath] recordingDelegate:self];
+        }
+    });
+}
 
-		}
-	});
+- (void)stopMovieRecording {
+    dispatch_async(self.sessionQueue, ^{
+        NSLog(@"stopping recording");
+        [[self movieFileOutput] stopRecording];
+    });
 }
 
 - (void)displayRecordingProgressBar {
@@ -368,17 +363,10 @@ static void * ConfirmedMediaSelectionContext = &ConfirmedMediaSelectionContext;
 - (void)screenButtonLongPress:(UILongPressGestureRecognizer *)gr {
     if (gr.state == UIGestureRecognizerStateBegan) {
         [self displayRecordingProgressBar];
-        [self toggleMovieRecording:nil];
+        [self startMovieRecording];
     } else if (gr.state == UIGestureRecognizerStateEnded) {
         [self resetProgressBar];
-        [self toggleMovieRecording:nil];
-    }
-}
-
-- (void)videoInProgressPlayerReachedEnd:(NSNotification *)notification {
-    AVPlayerItem *playerItem = [notification object];
-    if (playerItem) {
-        [playerItem seekToTime:kCMTimeZero];
+        [self stopMovieRecording];
     }
 }
 
@@ -391,51 +379,21 @@ static void * ConfirmedMediaSelectionContext = &ConfirmedMediaSelectionContext;
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
 {
 
+    UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
+    if (backgroundRecordingID != UIBackgroundTaskInvalid)
+        [[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID];
+    [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
+
     if (!self.videoInProgress) {
         self.videoInProgress = outputFileURL;
         NSLog(@"captured output; setting output url: %@", outputFileURL);
-        if (error)
+        if (error) {
             NSLog(@"%@", error);
+        } else {
+            [self setLockInterfaceRotation:NO];
+            [self displayVideoConfirmationModeUI:outputFileURL];
+        }
         
-        [self setLockInterfaceRotation:NO];
-        
-        [self displayVideoConfirmationModeUI];
-    }
-}
-
-#pragma mark Media Cancel Confirm
-- (void)confirmVideo {
-    NSLog(@"confirm video!");
-    [self writeVideoInProgressToCameraRoll];
-}
-
-- (void)cancelVideo {
-    NSLog(@"cancel video");
-    [self configureTransparentNavigationBar];
-    [[self.view.layer.sublayers lastObject] removeFromSuperlayer];
-    [self resetProgressBar];
-    self.screenButton.enabled = YES;//cancelling video; re-enable screen interaction
-    [self clearVideoInProgressTempFile];
-}
-
-
-- (void)writeVideoInProgressToCameraRoll {
-    if (self.videoInProgress) {
-        // Note the backgroundRecordingID for use in the ALAssetsLibrary completion handler to end the background task associated with this recording. This allows a new recording to be started, associated with a new UIBackgroundTaskIdentifier, once the movie file output's -isRecording is back to NO — which happens sometime after this method returns.
-        UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
-        [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
-        NSLog(@"ready to begin writing to asset lib");
-        [[[ALAssetsLibrary alloc] init] writeVideoAtPathToSavedPhotosAlbum:self.videoInProgress completionBlock:^(NSURL *assetURL, NSError *error) {
-            if (error)
-                NSLog(@"%@", error);
-            
-            [self clearVideoInProgressTempFile];
-            
-            if (backgroundRecordingID != UIBackgroundTaskInvalid)
-                [[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID];
-            NSLog(@"finished writing video, asset url is: %@", assetURL);
-            [self.delegate cameraSessionController:self didFinishPickingMediaWithInfo:@{@"videoAssetURL":assetURL}];
-        }];
     }
 }
 
@@ -539,56 +497,15 @@ static void * ConfirmedMediaSelectionContext = &ConfirmedMediaSelectionContext;
 	}];
 }
 
-- (void)hideNavigationBar {
-    [[self navigationController] setNavigationBarHidden:YES animated:NO];
-}
-
 - (void)configureTransparentNavigationBar {
     [[self navigationController].navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [self navigationController].navigationBar.shadowImage = [UIImage new];
     [self navigationController].navigationBar.translucent = YES;
-//    UIBarButtonItem *cancel = [[UIBarButtonItem alloc]
-//                               initWithTitle:@"cancel"
-//                               style:UIBarButtonItemStyleBordered
-//                               target:self
-//                               action:@selector(cancelVideo)];
-//    self.navigationItem.leftBarButtonItem = cancel;
-
 }
 
-- (void)displayVideoConfirmationModeUI {
-    AVPlayer *player = [AVPlayer playerWithURL:self.videoInProgress];
-    player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(videoInProgressPlayerReachedEnd:)
-                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                                               object:[player currentItem]];
-    
-    AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
-    layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    layer.frame = self.view.frame;
-    [self.view.layer addSublayer:layer];
-    [player play];
-
-    
-    [[self navigationController].navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    [self navigationController].navigationBar.shadowImage = [UIImage new];
-    [self navigationController].navigationBar.translucent = YES;
-    [[self navigationController] setNavigationBarHidden:NO animated:NO];
-    UIBarButtonItem *cancel = [[UIBarButtonItem alloc]
-                               initWithTitle:@"cancel"
-                               style:UIBarButtonItemStyleBordered
-                               target:self
-                               action:@selector(cancelVideo)];
-    self.navigationItem.leftBarButtonItem = cancel;
-    
-    UIBarButtonItem *confirm = [[UIBarButtonItem alloc]
-                                initWithTitle:@"confirm"
-                                style:UIBarButtonItemStyleBordered
-                                target:self
-                                action:@selector(confirmVideo)];
-    self.navigationItem.rightBarButtonItem = confirm;
+- (void)displayVideoConfirmationModeUI:(NSURL *)videoURL {
+    TRVideoPreviewViewController *preview = [[TRVideoPreviewViewController alloc] initWithAssetUrl:videoURL];
+    [[self navigationController] pushViewController:preview animated:NO];
 }
 
 - (void)displayStillImageConfirmationModeUIForImageData:(NSData *)imageData {
@@ -598,11 +515,5 @@ static void * ConfirmedMediaSelectionContext = &ConfirmedMediaSelectionContext;
 }
 
 #pragma mark Utility / Helper
-
-- (void)clearVideoInProgressTempFile {
-    [[NSFileManager defaultManager] removeItemAtURL:self.videoInProgress error:nil];
-    self.videoInProgress = nil;
-}
-
 
 @end

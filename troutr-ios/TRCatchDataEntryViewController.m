@@ -38,13 +38,6 @@
 }
 
 - (void)initCatchImageViewWithImage:(UIImage *)image {
-//    UIImage *imageForBackground = nil;
-//    if (self.catchInProgress.image) {
-//        NSDate *start = [NSDate date];
-//        imageForBackground = [self.catchInProgress.image applyLightEffect];
-//        NSLog(@"elapsed time on light effect: %f", [[NSDate date] timeIntervalSinceDate:start]);
-//    } else {
-//    }
     dispatch_async(dispatch_get_main_queue(), ^{
         self.catchImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.catchImageView.alpha = 0.0;
@@ -56,11 +49,11 @@
 }
 
 - (void)playerReachedEnd:(NSNotification *)notification {
-//    NSLog(@"player reached end");
-//    AVPlayerItem *playerItem = [notification object];
-//    if (playerItem) {
-//        [playerItem seekToTime:kCMTimeZero];
-//    }
+    NSLog(@"player reached end");
+    AVPlayerItem *playerItem = [notification object];
+    if (playerItem) {
+        [playerItem seekToTime:kCMTimeZero];
+    }
 }
 
 - (void)initCatchVideoViewWithURL:(NSURL *)assetURL {
@@ -76,8 +69,8 @@
     AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
     layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     layer.frame = self.view.frame;
-//    [self.view.layer insertSublayer:layer above:self.catchImageView.layer];
-    [self.view.layer insertSublayer:layer atIndex:1];
+    [self.view.layer insertSublayer:layer atIndex:0];
+    self.view.backgroundColor = [UIColor clearColor];
     [self.view bringSubviewToFront:self.speciesField];
 
     [player play];
@@ -122,9 +115,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    NSLog(@"location update");
-    NSLog(@"%d", [locations count]);
-    NSLog(@"first location %@", [locations firstObject]);
+     NSLog(@"first location %@", [locations firstObject]);
 }
 
 #pragma mark - IBActions

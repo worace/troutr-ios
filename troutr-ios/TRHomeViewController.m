@@ -12,7 +12,6 @@
 #import "TRCatchLog.h"
 #import "TRCatchDetailViewController.h"
 #import "TRCatchTableViewCell.h"
-#import "TRCameraSessionViewControllerDelegate.h"
 #import "TRCatchDataEntryViewController.h"
 #import "TRCamViewController.h"
 
@@ -22,7 +21,7 @@
 }
 @end
 
-@interface TRHomeViewController () <TRCameraSessionViewControllerDelegate>
+@interface TRHomeViewController ()
 
 @end
 
@@ -60,22 +59,7 @@
 
 - (IBAction)logCatch:(id)sender {
     TRCamViewController *cameraSession = [[TRCamViewController alloc] init];
-    cameraSession.delegate = self;
     [self.navigationController pushViewController:cameraSession animated:YES];
-}
-
-- (void)cameraSessionController:(TRCamViewController *)cameraSessionController didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    NSLog(@"camera session returned with info %@", info);
-      TRCatch *catch = [[TRCatch alloc] init];
-
-    if (info[@"image"]) {
-        catch.image = info[@"image"];
-    } else if (info[@"videoAssetURL"]) {
-        catch.videoAssetURL = info[@"videoAssetURL"];
-    }
-    TRCatchDataEntryViewController *dataEntry = [[TRCatchDataEntryViewController alloc] init];
-    dataEntry.catchInProgress = catch;
-    [self.navigationController pushViewController:dataEntry animated:YES];
 }
 
 # pragma - mark UITableView

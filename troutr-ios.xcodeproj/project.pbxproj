@@ -73,7 +73,6 @@
 		BB81CE7F192AEA550062BCB8 /* TRColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRColors.h; sourceTree = "<group>"; };
 		BB81CE80192AEA550062BCB8 /* TRColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRColors.m; sourceTree = "<group>"; };
 		BB81CE8C192C270F0062BCB8 /* TRCameraSessionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCameraSessionViewController.xib; sourceTree = "<group>"; };
-		BB81CE90192C3ACD0062BCB8 /* TRCameraSessionViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TRCameraSessionViewControllerDelegate.h; sourceTree = "<group>"; };
 		BB81CE99192D73740062BCB8 /* TRCamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCamViewController.h; sourceTree = "<group>"; };
 		BB81CE9A192D73740062BCB8 /* TRCamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCamViewController.m; sourceTree = "<group>"; };
 		BB81CE9B192D73740062BCB8 /* TRCamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCamViewController.xib; sourceTree = "<group>"; };
@@ -201,7 +200,6 @@
 			isa = PBXGroup;
 			children = (
 				BB488DA4192918B000162FFB /* TRFlyPickerDelegate.h */,
-				BB81CE90192C3ACD0062BCB8 /* TRCameraSessionViewControllerDelegate.h */,
 			);
 			name = protocols;
 			sourceTree = "<group>";

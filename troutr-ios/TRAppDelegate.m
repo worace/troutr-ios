@@ -22,7 +22,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    NSLog(@"there are %d", [[TRCatchLog sharedStore].allCatches count]);
+    NSLog(@"there are %lu", (unsigned long)[[TRCatchLog sharedStore].allCatches count]);
     return YES;
 }
 

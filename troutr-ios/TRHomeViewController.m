@@ -12,6 +12,8 @@
 #import "TRCatchLog.h"
 #import "TRCatchDetailViewController.h"
 #import "TRCatchTableViewCell.h"
+#import "TRCatchDataEntryViewController.h"
+#import "TRCamViewController.h"
 
 @implementation UINavigationController (StatusBarStyle)
 - (UIViewController *)childViewControllerForStatusBarStyle {
@@ -56,9 +58,8 @@
 }
 
 - (IBAction)logCatch:(id)sender {
-    TRCatchImagePickerViewController *imageStep = [[TRCatchImagePickerViewController alloc] init];
-    imageStep.catchInProgress = [[TRCatch alloc] init];
-    [self.navigationController pushViewController:imageStep animated:YES];
+    TRCamViewController *cameraSession = [[TRCamViewController alloc] init];
+    [self.navigationController pushViewController:cameraSession animated:YES];
 }
 
 # pragma - mark UITableView

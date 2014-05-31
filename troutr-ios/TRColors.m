@@ -24,5 +24,9 @@ blue:((float)(hexValue & 0xFF))/255.0 alpha:a]
     return UIColorFromHex(0x99a306);
 }
 
++(UIColor *)troutrTeal {
+    return UIColorFromHex(0x05eeea);
+}
+
 
 @end

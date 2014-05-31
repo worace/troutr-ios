@@ -10,5 +10,5 @@
 #import "TRFlyPickerDelegate.h"
 
 @interface TRFlyPickerTableViewController : UITableViewController
-@property (nonatomic, strong) NSObject <TRFlyPickerDelegate> *delegate;
+@property (nonatomic, weak) NSObject <TRFlyPickerDelegate> *delegate;
 @end

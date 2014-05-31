@@ -15,6 +15,7 @@
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, strong)CLLocation *location;
 @property (nonatomic, strong)NSDate *dateCreated;
+@property (nonatomic, strong) NSURL *videoAssetURL;
 - (void) setImage:(UIImage *)image;
 - (UIImage *)image;
 @end

@@ -259,9 +259,10 @@ static void * ConfirmedMediaSelectionContext = &ConfirmedMediaSelectionContext;
 }
 
 - (void)registerGestureRecognizers {
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(screenButtonLongPress:)];
-    longPress.allowableMovement = 50;
-    [self.screenButton addGestureRecognizer:longPress];
+    // add this to restore video
+//    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(screenButtonLongPress:)];
+//    longPress.allowableMovement = 50;
+//    [self.screenButton addGestureRecognizer:longPress];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(snapStillImage:)];
     [self.screenButton addGestureRecognizer:tapGesture];
 }

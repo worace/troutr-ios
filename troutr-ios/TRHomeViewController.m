@@ -37,6 +37,7 @@
     [super viewDidLoad];
     [self registerCatchCell];
     [self configureNavigationBar];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)configureNavigationBar {
@@ -75,18 +76,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TRCatchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TRCatchTableViewCell"];
     TRCatch *catch = [self catchForIndexPath:indexPath];
-    UIImage *sizedImage = [[[TRImageScaler alloc] initWithImage:catch.image] scaleAndCropToSize:CGSizeMake(tableView.frame.size.width, tableView.frame.size.width)];
 
-    cell.contentView.superview.frame = CGRectMake(0, 0, tableView.frame.size.width, sizedImage.size.height + 50);
     [cell.contentView.superview setClipsToBounds:NO];
     cell.speciesLabel.text = catch.species;
-    cell.flyLabel.text = catch.fly;
-    cell.tumbnailView.frame = CGRectMake(0, 0, sizedImage.size.width, sizedImage.size.height);
-    cell.tumbnailView.image = sizedImage;
-
-    NSLog(@"image height for cell is %f", sizedImage.size.height);
-    NSLog(@"cell image height is %f", cell.tumbnailView.image.size.height);
-    NSLog(@"cell thumbnailView height is %f", cell.tumbnailView.frame.size.height);
+    cell.flyLabel.text = [NSString stringWithFormat:@"caught on: %@", catch.fly];
+    
+    UIImage *sizedImage = [[[TRImageScaler alloc] initWithImage:catch.image] scaleAndCropToSize:CGSizeMake(tableView.frame.size.width, tableView.frame.size.width)];
+    cell.catchImage.image = sizedImage;
+    
     return cell;
 }
 
@@ -98,7 +95,7 @@
 {
     TRCatch *catch = [self catchForIndexPath:indexPath];
     if (catch.image) {
-        return 400;
+        return 440;
     } else {
         return 60;
     }

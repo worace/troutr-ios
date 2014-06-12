@@ -21,21 +21,6 @@
     return self;
 }
 
-- (UIImage *)scaleAndCropToWidth:(CGFloat)width {
-    if (width > self.image.size.width) {
-        //scale width up, height is arbitrary
-//        float scaleFactor = width / self.image.size.width;
-//        return [self scaleAndCropToSize:CGSizeMake(width, self.image.size.height * scaleFactor)];
-        return [self imageWithImage:self.image scaledToWidth:width];
-    } else if (width < self.image.size.width) {
-        return self.image;
-    } else {
-        //they are the same, return the iamge
-        return self.image;
-    }
-}
-
-
 - (UIImage*)scaleAndCropToSize:(CGSize)targetSize {
     double ratio;
     double delta;
@@ -76,33 +61,5 @@
     
     return newImage;
 }
-
--(UIImage*)imageWithImage:(UIImage*)sourceImage scaledToWidth:(float)i_width
-{
-    NSLog(@"*********");
-    //vertical images squished
-    float oldWidth = sourceImage.size.width;
-    NSLog(@"old with is %f", oldWidth);
-    NSLog(@"old heigtht is %f", sourceImage.size.height);
-    NSLog(@"old aspect ratio is %f", sourceImage.size.width/sourceImage.size.height);
-    
-    NSLog(@"new width is %f", i_width);
-    float scaleFactor = i_width / oldWidth;
-    NSLog(@"scalefactor is %f", scaleFactor);
-    
-    
-    float newHeight = sourceImage.size.height * scaleFactor;
-    NSLog(@"new height will be %f", newHeight);
-    float newWidth = oldWidth * scaleFactor;
-    NSLog(@"newWidth is %f", newWidth);
-    NSLog(@"new aspect ratio is %f", newWidth / newHeight);
-    
-    UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight));
-    [sourceImage drawInRect:CGRectMake(0, 0, newWidth, newHeight)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
 
 @end

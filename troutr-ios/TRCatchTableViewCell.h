@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface TRCatchTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *tumbnailView;
+@property (weak, nonatomic) IBOutlet UIImageView *catchImage;
 @property (weak, nonatomic) IBOutlet UILabel *speciesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *flyLabel;
 @end

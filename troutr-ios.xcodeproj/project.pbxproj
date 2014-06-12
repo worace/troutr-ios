@@ -22,6 +22,8 @@
 		BB81CEA0192D73950062BCB8 /* TRCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */; };
 		BBEAD98C19380E6700395AEB /* TRImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */; };
 		BBEAD98F193814BF00395AEB /* TRVideoPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAD98E193814BF00395AEB /* TRVideoPreviewViewController.m */; };
+		BBEAD9921947DEB300395AEB /* TRImageScaler.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAD9911947DEB300395AEB /* TRImageScaler.m */; };
+		BBEAD9941947DEC400395AEB /* TRImageScalerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAD9931947DEC400395AEB /* TRImageScalerTest.m */; };
 		BBEEF860192310B0008AA7EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF85F192310B0008AA7EF /* Foundation.framework */; };
 		BBEEF862192310B0008AA7EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF861192310B0008AA7EF /* CoreGraphics.framework */; };
 		BBEEF864192310B0008AA7EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEEF863192310B0008AA7EF /* UIKit.framework */; };
@@ -82,6 +84,9 @@
 		BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRImagePreviewViewController.m; path = "troutr-ios/TRImagePreviewViewController.m"; sourceTree = "<group>"; };
 		BBEAD98D193814BF00395AEB /* TRVideoPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVideoPreviewViewController.h; sourceTree = "<group>"; };
 		BBEAD98E193814BF00395AEB /* TRVideoPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVideoPreviewViewController.m; sourceTree = "<group>"; };
+		BBEAD9901947DEB300395AEB /* TRImageScaler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRImageScaler.h; sourceTree = "<group>"; };
+		BBEAD9911947DEB300395AEB /* TRImageScaler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRImageScaler.m; sourceTree = "<group>"; };
+		BBEAD9931947DEC400395AEB /* TRImageScalerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRImageScalerTest.m; path = "../troutr-ios/TRImageScalerTest.m"; sourceTree = "<group>"; };
 		BBEEF85C192310B0008AA7EF /* troutr-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "troutr-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBEEF85F192310B0008AA7EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BBEEF861192310B0008AA7EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -273,6 +278,7 @@
 		BBEEF87E192310B0008AA7EF /* troutr-iosTests */ = {
 			isa = PBXGroup;
 			children = (
+				BBEAD9931947DEC400395AEB /* TRImageScalerTest.m */,
 				BB488D9219244B2D00162FFB /* TRFlyStoreTest.m */,
 				BBEEF87F192310B0008AA7EF /* Supporting Files */,
 				BB488D8E192442EA00162FFB /* TRImageStoreTest.m */,
@@ -292,6 +298,8 @@
 		BBEEF89D192316C7008AA7EF /* model */ = {
 			isa = PBXGroup;
 			children = (
+				BBEAD9901947DEB300395AEB /* TRImageScaler.h */,
+				BBEAD9911947DEB300395AEB /* TRImageScaler.m */,
 				BB488D9719244B5D00162FFB /* TRFlyStore.h */,
 				BB488D9819244B5D00162FFB /* TRFlyStore.m */,
 				BBEEF8AB192437FC008AA7EF /* TRImageStore.h */,
@@ -444,6 +452,7 @@
 			files = (
 				BBEEF891192311F7008AA7EF /* TRHomeViewController.m in Sources */,
 				BBEEF870192310B0008AA7EF /* TRAppDelegate.m in Sources */,
+				BBEAD9921947DEB300395AEB /* TRImageScaler.m in Sources */,
 				BB488DA7192918B000162FFB /* TRFlyPickerTableViewController.m in Sources */,
 				BBEEF8A419231F61008AA7EF /* TRCatchDetailViewController.m in Sources */,
 				BB81CE9C192D73740062BCB8 /* TRCamViewController.m in Sources */,
@@ -469,6 +478,7 @@
 			files = (
 				BB488D8F192442EA00162FFB /* TRImageStoreTest.m in Sources */,
 				BB488D9319244B2D00162FFB /* TRFlyStoreTest.m in Sources */,
+				BBEAD9941947DEC400395AEB /* TRImageScalerTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

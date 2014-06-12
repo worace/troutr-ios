@@ -14,6 +14,7 @@
 #import "TRCatchTableViewCell.h"
 #import "TRCatchDataEntryViewController.h"
 #import "TRCamViewController.h"
+#import "TRImageScaler.h"
 
 @implementation UINavigationController (StatusBarStyle)
 - (UIViewController *)childViewControllerForStatusBarStyle {
@@ -73,17 +74,34 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TRCatchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TRCatchTableViewCell"];
+    TRCatch *catch = [self catchForIndexPath:indexPath];
+    UIImage *sizedImage = [[[TRImageScaler alloc] initWithImage:catch.image] scaleAndCropToSize:CGSizeMake(tableView.frame.size.width, tableView.frame.size.width)];
+
+    cell.contentView.superview.frame = CGRectMake(0, 0, tableView.frame.size.width, sizedImage.size.height + 50);
     [cell.contentView.superview setClipsToBounds:NO];
-    TRCatch *catch = [[[TRCatchLog sharedStore] allCatches] objectAtIndex:indexPath.row];
     cell.speciesLabel.text = catch.species;
     cell.flyLabel.text = catch.fly;
-    cell.tumbnailView.image = catch.image;
+    cell.tumbnailView.frame = CGRectMake(0, 0, sizedImage.size.width, sizedImage.size.height);
+    cell.tumbnailView.image = sizedImage;
+
+    NSLog(@"image height for cell is %f", sizedImage.size.height);
+    NSLog(@"cell image height is %f", cell.tumbnailView.image.size.height);
+    NSLog(@"cell thumbnailView height is %f", cell.tumbnailView.frame.size.height);
     return cell;
+}
+
+- (TRCatch *)catchForIndexPath:(NSIndexPath *)indexPath {
+    return [[[TRCatchLog sharedStore] allCatches] objectAtIndex:indexPath.row];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    TRCatch *catch = [self catchForIndexPath:indexPath];
+    if (catch.image) {
+        return 400;
+    } else {
+        return 60;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -92,5 +110,6 @@
     detailVC.catch = catch;
     [self.navigationController pushViewController:detailVC animated:YES];
 }
+
 
 @end

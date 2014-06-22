@@ -34,31 +34,31 @@
 
 - (void)testFlyListGivesAListOfFlies
 {
-    XCTAssertEqual(26, [[[TRFlyStore sharedStore ] flyList] count]);
+    XCTAssertEqual(26, [[[TRFlyStore sharedStore ] sortedList] count]);
 }
 
 - (void)testFlyListIsSorted {
-    NSArray *knownSorted = [[[TRFlyStore sharedStore] flyList] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    XCTAssertEqualObjects(knownSorted, [[TRFlyStore sharedStore] flyList]);
+    NSArray *knownSorted = [[[TRFlyStore sharedStore] sortedList] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    XCTAssertEqualObjects(knownSorted, [[TRFlyStore sharedStore] sortedList]);
 }
 
-- (void)testFlyIndexKeysDictOfFlies {
-    NSDictionary *flies = [[TRFlyStore sharedStore ] flyIndex];
+- (void)testindexedListKeysDictOfFlies {
+    NSDictionary *flies = [[TRFlyStore sharedStore ] indexedList];
     NSArray *expected = @[@"Adams", @"Adams Female"];
     XCTAssertEqualObjects(expected, flies[@"A"]);
 }
 
 - (void)testFliesForKeyGivesEmptyArrayForBadKey {
-    XCTAssertEqualObjects(@[], [[TRFlyStore sharedStore] fliesForKey:@"agdssdgsdg"]);
+    XCTAssertEqualObjects(@[], [[TRFlyStore sharedStore] itemsForKey:@"agdssdgsdg"]);
 }
 
 - (void)testFliesForIndexGivesFliesForProperKey {
     NSArray *expected = @[@"Adams", @"Adams Female"];
-    XCTAssertEqualObjects(expected, [[TRFlyStore sharedStore] fliesForKey:@"A"]);
+    XCTAssertEqualObjects(expected, [[TRFlyStore sharedStore] itemsForKey:@"A"]);
 }
 
 - (void)testFlyIndexKeysIsSorted {
-    NSArray *expected = [[[TRFlyStore sharedStore].flyIndex allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    XCTAssertEqualObjects(expected, [[TRFlyStore sharedStore] flyIndexKeys]);
+    NSArray *expected = [[[TRFlyStore sharedStore].indexedList allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    XCTAssertEqualObjects(expected, [[TRFlyStore sharedStore] indexKeys]);
 }
 @end

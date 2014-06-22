@@ -7,12 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TRIndexedStringStore.h"
 
-@interface TRFlyStore : NSObject
-@property (nonatomic, readonly, copy)NSDictionary *flyIndex;
-@property (nonatomic, readonly, copy)NSArray *flyList;
-+ (instancetype)sharedStore;
-- (NSArray *)flyList;
-- (NSArray *)flyIndexKeys;
-- (NSArray *)fliesForKey:(NSString *)key;
+@interface TRFlyStore : TRIndexedStringStore
 @end

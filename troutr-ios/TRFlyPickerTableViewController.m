@@ -23,16 +23,16 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[[TRFlyStore sharedStore] flyIndexKeys] count];
+    return [[[TRFlyStore sharedStore] indexKeys] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSString *key = [[[TRFlyStore sharedStore] flyIndexKeys] objectAtIndex:section];
-    return [[[TRFlyStore sharedStore] fliesForKey:key] count];
+    NSString *key = [[[TRFlyStore sharedStore] indexKeys] objectAtIndex:section];
+    return [[[TRFlyStore sharedStore] itemsForKey:key] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [[[TRFlyStore sharedStore] flyIndexKeys] objectAtIndex:section];
+    return [[[TRFlyStore sharedStore] indexKeys] objectAtIndex:section];
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
@@ -51,7 +51,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-    return [[[TRFlyStore sharedStore] flyIndexKeys] indexOfObject:title];
+    return [[[TRFlyStore sharedStore] indexKeys] indexOfObject:title];
 }
 
 #pragma - mark convenience
@@ -65,8 +65,8 @@
 }
 
 - (NSArray *)fliesForIndexPath:(NSIndexPath *)indexPath {
-    NSString *key = [[[TRFlyStore sharedStore] flyIndexKeys] objectAtIndex:indexPath.section];
-    return [[TRFlyStore sharedStore] fliesForKey:key];
+    NSString *key = [[[TRFlyStore sharedStore] indexKeys] objectAtIndex:indexPath.section];
+    return [[TRFlyStore sharedStore] itemsForKey:key];
 }
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class TRCatch;
+#import "TRCatch.h"
 
 @interface TRCatchLog : NSObject
 @property (nonatomic, readonly, copy) NSArray *allCatches;

@@ -36,6 +36,7 @@
 
 - (TRCatch *)recordCatch:(TRCatch *)catch {
     [self.internalCatchLog addObject:catch];
+    [self sortLog];
     [self saveChanges];
     return catch;
 }
@@ -43,6 +44,7 @@
 - (NSMutableArray *)internalCatchLog {
     if (!_internalCatchLog) {
         _internalCatchLog = [self loadSavedLog];
+        [self sortLog];
     }
     return _internalCatchLog;
 }
@@ -65,6 +67,14 @@
     NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentDirectory = [documentDirectories firstObject];
     return [documentDirectory stringByAppendingPathComponent:@"troutr_catches.archive"];
+}
+
+- (void)sortLog {
+    if (self.internalCatchLog) {
+        self.internalCatchLog = [[self.internalCatchLog sortedArrayUsingComparator:^NSComparisonResult(TRCatch *catch1, TRCatch *catch2) {
+            return [catch2.dateCreated compare:catch1.dateCreated];
+        }] mutableCopy];
+    }
 }
 
 @end

@@ -6,9 +6,10 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+#import "TRIndexedStringPickerViewController.h"
+#import "TRIndexedStringPickerDelegate.h"
 #import "TRFlyPickerDelegate.h"
 
-@interface TRFlyPickerTableViewController : UITableViewController
+@interface TRFlyPickerTableViewController : TRIndexedStringPickerViewController
 @property (nonatomic, weak) NSObject <TRFlyPickerDelegate> *delegate;
 @end

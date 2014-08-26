@@ -10,5 +10,5 @@
 
 @protocol TRFlyPickerDelegate <NSObject>
 @required
-- (void)flyPickerDidSelectFly:(NSString *)fly fromPicker:(UIViewController *)picker;
+- (void)flyPickerDidSelectItem:(NSString *)item fromPicker:(UIViewController *)picker;
 @end

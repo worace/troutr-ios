@@ -11,7 +11,9 @@
 #import "TRCatchDetailViewController.h"
 #import "TRFlyPickerTableViewController.h"
 #import "UIImage+ImageEffects.h"
+#import "TRFlyStore.h"
 #import <AVFoundation/AVFoundation.h>
+#import "TRFlyPickerDelegate.h"
 
 @interface TRCatchDataEntryViewController () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, TRFlyPickerDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) UIPickerView *speciesPicker;
@@ -181,8 +183,8 @@
 }
 
 #pragma  mark - fly picker
-- (void)flyPickerDidSelectFly:(NSString *)fly fromPicker:(UIViewController *)picker {
-    self.flyField.text = fly;
+- (void)flyPickerDidSelectItem:(NSString *)item fromPicker:(UIViewController *)picker {
+    self.flyField.text = item;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 

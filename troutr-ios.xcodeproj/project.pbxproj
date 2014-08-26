@@ -21,6 +21,7 @@
 		BB81CE9D192D73740062BCB8 /* TRCamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB81CE9B192D73740062BCB8 /* TRCamViewController.xib */; };
 		BB81CEA0192D73950062BCB8 /* TRCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */; };
 		BBE6010F19572812004D7542 /* TRIndexedStringStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE6010E19572812004D7542 /* TRIndexedStringStore.m */; };
+		BBE6011219572D01004D7542 /* TRIndexedStringPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE6011119572D01004D7542 /* TRIndexedStringPickerViewController.m */; };
 		BBEAD98C19380E6700395AEB /* TRImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */; };
 		BBEAD98F193814BF00395AEB /* TRVideoPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAD98E193814BF00395AEB /* TRVideoPreviewViewController.m */; };
 		BBEAD9921947DEB300395AEB /* TRImageScaler.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAD9911947DEB300395AEB /* TRImageScaler.m */; };
@@ -61,6 +62,7 @@
 
 /* Begin PBXFileReference section */
 		391FFA74730C4740BEA89384 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		BB113DC219AD525B00D01BDA /* TRIndexedStringPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIndexedStringPickerDelegate.h; sourceTree = "<group>"; };
 		BB488D8E192442EA00162FFB /* TRImageStoreTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRImageStoreTest.m; sourceTree = "<group>"; };
 		BB488D9219244B2D00162FFB /* TRFlyStoreTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRFlyStoreTest.m; sourceTree = "<group>"; };
 		BB488D9719244B5D00162FFB /* TRFlyStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRFlyStore.h; sourceTree = "<group>"; };
@@ -83,8 +85,10 @@
 		BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCamPreviewView.m; sourceTree = "<group>"; };
 		BBE6010D19572812004D7542 /* TRIndexedStringStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIndexedStringStore.h; sourceTree = "<group>"; };
 		BBE6010E19572812004D7542 /* TRIndexedStringStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIndexedStringStore.m; sourceTree = "<group>"; };
-		BBEAD98A19380E6700395AEB /* TRImagePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRImagePreviewViewController.h; path = "troutr-ios/TRImagePreviewViewController.h"; sourceTree = "<group>"; };
-		BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRImagePreviewViewController.m; path = "troutr-ios/TRImagePreviewViewController.m"; sourceTree = "<group>"; };
+		BBE6011019572D01004D7542 /* TRIndexedStringPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIndexedStringPickerViewController.h; sourceTree = "<group>"; };
+		BBE6011119572D01004D7542 /* TRIndexedStringPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIndexedStringPickerViewController.m; sourceTree = "<group>"; };
+		BBEAD98A19380E6700395AEB /* TRImagePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRImagePreviewViewController.h; sourceTree = "<group>"; };
+		BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRImagePreviewViewController.m; sourceTree = "<group>"; };
 		BBEAD98D193814BF00395AEB /* TRVideoPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVideoPreviewViewController.h; sourceTree = "<group>"; };
 		BBEAD98E193814BF00395AEB /* TRVideoPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVideoPreviewViewController.m; sourceTree = "<group>"; };
 		BBEAD9901947DEB300395AEB /* TRImageScaler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRImageScaler.h; sourceTree = "<group>"; };
@@ -154,6 +158,10 @@
 		BB488D9E1929019B00162FFB /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BBEAD98A19380E6700395AEB /* TRImagePreviewViewController.h */,
+				BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */,
+				BBE6011019572D01004D7542 /* TRIndexedStringPickerViewController.h */,
+				BBE6011119572D01004D7542 /* TRIndexedStringPickerViewController.m */,
 				BBEAD98D193814BF00395AEB /* TRVideoPreviewViewController.h */,
 				BBEAD98E193814BF00395AEB /* TRVideoPreviewViewController.m */,
 				BB81CE8F192C3AB10062BCB8 /* protocols */,
@@ -208,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				BB488DA4192918B000162FFB /* TRFlyPickerDelegate.h */,
+				BB113DC219AD525B00D01BDA /* TRIndexedStringPickerDelegate.h */,
 			);
 			name = protocols;
 			sourceTree = "<group>";
@@ -215,8 +224,6 @@
 		BBEEF853192310B0008AA7EF = {
 			isa = PBXGroup;
 			children = (
-				BBEAD98A19380E6700395AEB /* TRImagePreviewViewController.h */,
-				BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */,
 				BBEEF865192310B0008AA7EF /* troutr-ios */,
 				BBEEF87E192310B0008AA7EF /* troutr-iosTests */,
 				BBEEF85D192310B0008AA7EF /* Products */,
@@ -466,6 +473,7 @@
 				BBEEF89C192316C4008AA7EF /* TRCatch.m in Sources */,
 				BB488DA31929020B00162FFB /* UIImage+ImageEffects.m in Sources */,
 				BBEEF89819231607008AA7EF /* TRCatchDataEntryViewController.m in Sources */,
+				BBE6011219572D01004D7542 /* TRIndexedStringPickerViewController.m in Sources */,
 				BBEEF8A019231CBC008AA7EF /* TRCatchLog.m in Sources */,
 				BBEEF8A919243571008AA7EF /* TRCatchImagePickerViewController.m in Sources */,
 				BB81CE81192AEA550062BCB8 /* TRColors.m in Sources */,

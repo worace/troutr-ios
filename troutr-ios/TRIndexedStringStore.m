@@ -14,24 +14,6 @@
 @end
 
 @implementation TRIndexedStringStore
-+ (instancetype)sharedStore {
-    static TRIndexedStringStore *sharedStore;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void) {
-        if (!sharedStore) {
-            sharedStore = [[self alloc] initPrivate];
-        }
-    });
-    return sharedStore;
-}
-
-- (instancetype)initPrivate {
-    self = [super init];
-    if (self) {
-    }
-    return self;
-}
-
 - (NSDictionary *)indexedList {
     return [self.internalIndex copy];
 }

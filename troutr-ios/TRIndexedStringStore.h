@@ -13,5 +13,4 @@
 @property (nonatomic, readonly, copy)NSArray *sortedList;
 - (NSArray *)indexKeys;
 - (NSArray *)itemsForKey:(NSString *)key;
-+ (instancetype)sharedStore;
 @end

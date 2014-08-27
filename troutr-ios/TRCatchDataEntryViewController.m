@@ -13,9 +13,10 @@
 #import "UIImage+ImageEffects.h"
 #import "TRFlyStore.h"
 #import <AVFoundation/AVFoundation.h>
-#import "TRFlyPickerDelegate.h"
+#import "TRFishSpeciesTableViewController.h"
+#import "TRIndexedStringPickerViewController.h"
 
-@interface TRCatchDataEntryViewController () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, TRFlyPickerDelegate, CLLocationManagerDelegate>
+@interface TRCatchDataEntryViewController () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, TRIndexedStringPickerDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) UIPickerView *speciesPicker;
 @property (strong, nonatomic) IBOutlet UITextField *speciesField;
 @property (weak, nonatomic) IBOutlet UIImageView *catchImageView;
@@ -26,16 +27,10 @@
 @implementation TRCatchDataEntryViewController
 
 - (void)initSpeciesPicker {
-    self.speciesPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 43, 320, 480)];
-    self.speciesPicker.delegate = self;
-    self.speciesPicker.dataSource = self;
-    [self.speciesPicker setShowsSelectionIndicator:YES];
-    self.speciesField.inputView = self.speciesPicker;
+    self.speciesField.delegate = self;
 }
 
 - (void)initFlyField {
-    self.flyField.returnKeyType = UIReturnKeyDone;
-    self.flyField.enablesReturnKeyAutomatically = NO;
     self.flyField.delegate = self;
 }
 
@@ -96,8 +91,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initSpeciesPicker];
     [self initBackgroundDisplay];
+    [self initSpeciesPicker];
     [self initFlyField];
     [self initLocationTracking];
 }
@@ -177,20 +172,39 @@
         [self.flyField resignFirstResponder];
         [self presentFlyPicker];
         return NO;
+    } else if (textField == self.speciesField) {
+        [self.speciesField resignFirstResponder];
+        [self presentSpeciesPicker];
+        return NO;
     } else {
         return YES;
     }
 }
 
 #pragma  mark - fly picker
-- (void)flyPickerDidSelectItem:(NSString *)item fromPicker:(UIViewController *)picker {
-    self.flyField.text = item;
-    [picker dismissViewControllerAnimated:YES completion:nil];
-}
 
 - (void)presentFlyPicker {
     TRFlyPickerTableViewController *flyPickerVC = [[TRFlyPickerTableViewController alloc] init];
     flyPickerVC.delegate = self;
     [self presentViewController:flyPickerVC animated:YES completion:nil];
+}
+
+#pragma mark - species picker
+
+- (void)pickerDidSelectItem:(NSString *)item fromPicker:(TRIndexedStringPickerViewController *)picker {
+    if ([picker class] == [TRFlyPickerTableViewController class]) {
+        NSLog(@"fly picker picked");
+        self.flyField.text = item;
+    } else if ([picker class] == [TRFishSpeciesTableViewController class]) {
+        NSLog(@"fish picker picked");
+        self.speciesField.text = item;
+    }
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)presentSpeciesPicker {
+    TRFishSpeciesTableViewController *fishPickerVC = [[TRFishSpeciesTableViewController alloc] init];
+    fishPickerVC.delegate = self;
+    [self presentViewController:fishPickerVC animated:YES completion:nil];
 }
 @end

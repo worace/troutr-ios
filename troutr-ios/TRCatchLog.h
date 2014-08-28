@@ -12,6 +12,7 @@
 @interface TRCatchLog : NSObject
 @property (nonatomic, readonly, copy) NSArray *allCatches;
 - (TRCatch *)recordCatch:(TRCatch *)catch;
+- (void)deleteCatch:(TRCatch *)catch;
 + (instancetype)sharedStore;
 - (BOOL)saveChanges;
 @end

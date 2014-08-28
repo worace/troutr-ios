@@ -109,4 +109,17 @@
 }
 
 
+#pragma mark deleting editing
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"commit editing style!");
+    if (editingStyle ==UITableViewCellEditingStyleDelete) {
+        TRCatch *catch = [self catchForIndexPath:indexPath];
+        [[TRCatchLog sharedStore] deleteCatch:catch];
+        [self.tableView reloadData];
+    }
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+}
 @end

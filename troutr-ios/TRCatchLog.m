@@ -41,6 +41,11 @@
     return catch;
 }
 
+- (void)deleteCatch:(TRCatch *)catch {
+    [self.internalCatchLog removeObject:catch];
+    [self saveChanges];
+}
+
 - (NSMutableArray *)internalCatchLog {
     if (!_internalCatchLog) {
         _internalCatchLog = [self loadSavedLog];

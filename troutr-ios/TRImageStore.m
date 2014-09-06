@@ -52,8 +52,14 @@
     if (!image) { return; }
     self.imageDictionary[key] = image;
     NSString *imagePath = [self imagePathForKey:key];
-    NSData *data = UIImageJPEGRepresentation(image, 0.5);
-    [data writeToFile:imagePath atomically:YES];
+    NSData *data = UIImageJPEGRepresentation(image, 0.8);
+    NSLog(@"write image to disk");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        //TODO: Should be backgrounded
+        [data writeToFile:imagePath atomically:YES];
+        NSLog(@"finished writing image");
+    });
+
 }
 
 - (NSString *)imagePathForKey:(NSString *)key {

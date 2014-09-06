@@ -11,6 +11,9 @@
 
 @implementation TRCatch
 - (void)encodeWithCoder:(NSCoder *)aCoder {
+    if (self.image) {
+        [[TRImageStore sharedStore] setImage:self.image forKey:self.uid];
+    }
     [aCoder encodeObject:self.species forKey:@"species"];
     [aCoder encodeObject:self.fly forKey:@"fly"];
     [aCoder encodeObject:self.uid forKey:@"uid"];
@@ -30,12 +33,12 @@
     }
     return self;
 }
-- (void)setImage:(UIImage *)image {
-    [[TRImageStore sharedStore] setImage:image forKey:self.uid];
-}
 
 - (UIImage *)image {
-    return [[TRImageStore sharedStore] imageForKey:self.uid];
+    if (!_image) {
+        _image = [[TRImageStore sharedStore] imageForKey:self.uid];
+    }
+    return _image;
 }
 
 - (NSDate *)dateCreated {

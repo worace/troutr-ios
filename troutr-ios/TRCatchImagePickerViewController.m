@@ -25,7 +25,6 @@
         [self presentViewController:picker animated:YES completion:nil];
     } else {
         [self displayCameraNotAvailableAlert];
-        
     }
 }
 

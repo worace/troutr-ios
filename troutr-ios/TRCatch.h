@@ -12,10 +12,9 @@
 @interface TRCatch : NSObject <NSCoding>
 @property (nonatomic, strong) NSString *species;
 @property (nonatomic, strong) NSString *fly;
-@property (nonatomic, copy)NSString *uid;
+@property (nonatomic, copy) NSString *uid;
 @property (nonatomic, strong)CLLocation *location;
 @property (nonatomic, strong)NSDate *dateCreated;
 @property (nonatomic, strong) NSURL *videoAssetURL;
-- (void) setImage:(UIImage *)image;
-- (UIImage *)image;
+@property (nonatomic, strong) UIImage *image;
 @end

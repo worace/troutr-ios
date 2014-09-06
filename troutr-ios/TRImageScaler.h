@@ -11,4 +11,5 @@
 @interface TRImageScaler : NSObject
 - (instancetype)initWithImage:(UIImage *)image;
 - (UIImage *)scaleAndCropToSize:(CGSize)targetSize;
+- (UIImage *)scaleToRatio:(double)ratio;
 @end

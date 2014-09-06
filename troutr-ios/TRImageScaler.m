@@ -21,6 +21,23 @@
     return self;
 }
 
+- (UIImage *)scaleToRatio:(double)ratio {
+    CGSize sz = CGSizeMake(self.image.size.width*ratio, self.image.size.height*ratio);
+    CGRect rect = CGRectMake(0, 0, sz.width, sz.height);
+
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        UIGraphicsBeginImageContextWithOptions(sz, YES, 0.0);
+    } else {
+        UIGraphicsBeginImageContext(sz);
+    }
+
+    [self.image drawInRect:rect];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
 - (UIImage*)scaleAndCropToSize:(CGSize)targetSize {
     double ratio;
     double delta;

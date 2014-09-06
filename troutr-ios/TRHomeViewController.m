@@ -13,7 +13,6 @@
 #import "TRCatchDetailViewController.h"
 #import "TRCatchTableViewCell.h"
 #import "TRCatchDataEntryViewController.h"
-#import "TRCamViewController.h"
 #import "TRImageScaler.h"
 
 @implementation UINavigationController (StatusBarStyle)
@@ -22,7 +21,7 @@
 }
 @end
 
-@interface TRHomeViewController ()
+@interface TRHomeViewController () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end
 
@@ -60,9 +59,80 @@
 }
 
 - (IBAction)logCatch:(id)sender {
-    TRCamViewController *cameraSession = [[TRCamViewController alloc] init];
-    [self.navigationController pushViewController:cameraSession animated:YES];
+//    TRCatchImagePickerViewController *imageStep = [[TRCatchImagePickerViewController alloc] init];
+//    imageStep.catchInProgress = [[TRCatch alloc] init];
+//    [self.navigationController pushViewController:imageStep animated:YES];
+    
+    UIActionSheet * sheet = [[UIActionSheet alloc] initWithTitle:@"Select Photo"
+                                                        delegate:self
+                                               cancelButtonTitle:@"Cancel"
+                                          destructiveButtonTitle:nil
+                                               otherButtonTitles:@"Take Photo", @"Skip Photo", nil];
+    NSLog(@"displaying sheet");
+//    [sheet showFromRect:CGRectMake(0, 70, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.width) inView:self.view animated:YES];
+    [sheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
+
+# pragma - mark ActionSheet
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        [self takePhoto];
+    } else if (buttonIndex == 1) {
+        [self logCatchWithoutImage];
+    }
+}
+
+- (void)logCatchWithoutImage {
+    TRCatch *newCatch = [[TRCatch alloc] init];
+    TRCatchDataEntryViewController *catchInfoStep = [[TRCatchDataEntryViewController alloc] init];
+    catchInfoStep.catchInProgress = newCatch;
+    NSLog(@"advancing!");
+    [self.navigationController pushViewController:catchInfoStep animated:YES];
+}
+
+#pragma - mark Image Picker
+
+- (void)takePhoto {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+//        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:picker animated:YES completion:nil];
+    } else {
+        [self displayCameraNotAvailableAlert];
+    }
+}
+
+- (void)displayCameraNotAvailableAlert {
+    [[[UIAlertView alloc] initWithTitle:@"error"
+                                message:@"no camera available"
+                               delegate:nil
+                      cancelButtonTitle:@"ok"
+                      otherButtonTitles:nil] show];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+
+    TRCatch *newCatch = [[TRCatch alloc] init];
+    if (image) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            UIImageWriteToSavedPhotosAlbum(image,nil,nil,nil);
+        });
+        UIImage *reduced = [[[TRImageScaler alloc] initWithImage:image] scaleToRatio:0.25];
+        [newCatch setImage:reduced];
+    }
+    
+    TRCatchDataEntryViewController *catchInfoStep = [[TRCatchDataEntryViewController alloc] init];
+    catchInfoStep.catchInProgress = newCatch;
+    NSLog(@"advancing!");
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController pushViewController:catchInfoStep animated:YES];
+}
+
+
 
 # pragma - mark UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

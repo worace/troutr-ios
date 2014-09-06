@@ -31,16 +31,42 @@
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    NSLog(@"cancel");
+    self.searchBar.text = @"";
+    self.isSearching = NO;
+    [self.searchBar resignFirstResponder];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self configureNavBar];
+    [self addGestureRecognizers];
+    [self configureSearchBar];
+    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
+}
+
+- (void)addGestureRecognizers {
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(back)];
+    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:swipeRight];
+}
+
+- (void)back {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)configureSearchBar {
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 70, 320, 44)];
+    self.searchBar.showsCancelButton = YES;
     self.searchBar.delegate = self;
+    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.filteredResults = [[NSMutableArray alloc] init];
     [self.tableView setTableHeaderView:self.searchBar];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
+}
+
+- (void)configureNavBar {
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (TRIndexedStringStore *)store {

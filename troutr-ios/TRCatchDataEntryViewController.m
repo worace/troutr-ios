@@ -181,30 +181,27 @@
     }
 }
 
-#pragma  mark - fly picker
-
-- (void)presentFlyPicker {
-    TRFlyPickerTableViewController *flyPickerVC = [[TRFlyPickerTableViewController alloc] init];
-    flyPickerVC.delegate = self;
-    [self presentViewController:flyPickerVC animated:YES completion:nil];
-}
-
-#pragma mark - species picker
+#pragma  mark - fly and species picker
 
 - (void)pickerDidSelectItem:(NSString *)item fromPicker:(TRIndexedStringPickerViewController *)picker {
     if ([picker class] == [TRFlyPickerTableViewController class]) {
-        NSLog(@"fly picker picked");
         self.flyField.text = item;
     } else if ([picker class] == [TRFishSpeciesTableViewController class]) {
-        NSLog(@"fish picker picked");
         self.speciesField.text = item;
     }
-    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)presentSpeciesPicker {
     TRFishSpeciesTableViewController *fishPickerVC = [[TRFishSpeciesTableViewController alloc] init];
     fishPickerVC.delegate = self;
-    [self presentViewController:fishPickerVC animated:YES completion:nil];
+    [self.navigationController pushViewController:fishPickerVC animated:YES];
 }
+
+- (void)presentFlyPicker {
+    TRFlyPickerTableViewController *flyPickerVC = [[TRFlyPickerTableViewController alloc] init];
+    flyPickerVC.delegate = self;
+    [self.navigationController pushViewController:flyPickerVC animated:YES];
+}
+
 @end

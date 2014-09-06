@@ -34,7 +34,7 @@
 - (NSArray *)internalList {
     if (!_internalList) {
         NSLog(@"fly sotre generating internal list");
-        _internalList = [@[@"Adams", @"Parachute Adams", @"Griffith's Gnat", @"Blue Quill", @"Blue Wing Olive", @"Dark Cahill", @"Hendrickson", @"Ginger Quill", @"Gray Fox", @"Hare's Ear", @"Light Cahill", @"March Brown", @"Pale Evening Dun", @"Pale Morning Dun", @"Quill Gordon", @"Royal Coachman", @"Pheasant Tail", @"Zug Bug", @"Black Ant", @"Black Flying Ant", @"Green Cricket", @"Red Flying Ant", @"Woolly Bugger", @"Royal Wulff", @"Elk Hair Caddis", @"Yellow Sally", @"Prince Nymph", @"Zebra Midge", @"Foam Hopper", @"Chernobyl Ant", @"Sculpin", @"Dave's Hopper", @"Parachute Ant", @"Deer Hair Bug", @"Bass Popper", @"Stonefly Nymph", @"Stonefly Dry"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        _internalList = [@[@"Adams", @"Parachute Adams", @"Griffith's Gnat", @"Blue Quill", @"Blue Wing Olive", @"Dark Cahill", @"Hendrickson", @"Ginger Quill", @"Gray Fox", @"Hare's Ear", @"Light Cahill", @"March Brown", @"Pale Evening Dun", @"Pale Morning Dun", @"Quill Gordon", @"Royal Coachman", @"Pheasant Tail", @"Zug Bug", @"Black Ant", @"Black Flying Ant", @"Green Cricket", @"Red Flying Ant", @"Woolly Bugger", @"Royal Wulff", @"Elk Hair Caddis", @"Yellow Sally", @"Prince Nymph", @"Zebra Midge", @"Foam Hopper", @"Chernobyl Ant", @"Sculpin", @"Dave's Hopper", @"Parachute Ant", @"Deer Hair Bug", @"Bass Popper", @"Stonefly Nymph", @"Stonefly Dry", @"Beetle",@"RS2",@"Crayfish",@"Clawdad"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     }
     NSLog(@"fly store returning internal list");
     return _internalList;

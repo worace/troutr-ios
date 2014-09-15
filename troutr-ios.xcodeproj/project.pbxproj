@@ -24,6 +24,8 @@
 		BB81CE9C192D73740062BCB8 /* TRCamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE9A192D73740062BCB8 /* TRCamViewController.m */; };
 		BB81CE9D192D73740062BCB8 /* TRCamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB81CE9B192D73740062BCB8 /* TRCamViewController.xib */; };
 		BB81CEA0192D73950062BCB8 /* TRCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */; };
+		BBA5575319C67815005EAFDF /* configuration.plist.example.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBA5575219C67815005EAFDF /* configuration.plist.example.plist */; };
+		BBA5575519C6790D005EAFDF /* configuration.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBA5575419C6790D005EAFDF /* configuration.plist */; };
 		BBE6010F19572812004D7542 /* TRIndexedStringStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE6010E19572812004D7542 /* TRIndexedStringStore.m */; };
 		BBE6011219572D01004D7542 /* TRIndexedStringPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE6011119572D01004D7542 /* TRIndexedStringPickerViewController.m */; };
 		BBEAD98C19380E6700395AEB /* TRImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */; };
@@ -90,6 +92,8 @@
 		BB81CE9B192D73740062BCB8 /* TRCamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRCamViewController.xib; sourceTree = "<group>"; };
 		BB81CE9E192D73950062BCB8 /* TRCamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCamPreviewView.h; sourceTree = "<group>"; };
 		BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCamPreviewView.m; sourceTree = "<group>"; };
+		BBA5575219C67815005EAFDF /* configuration.plist.example.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = configuration.plist.example.plist; sourceTree = "<group>"; };
+		BBA5575419C6790D005EAFDF /* configuration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = configuration.plist; sourceTree = "<group>"; };
 		BBE6010D19572812004D7542 /* TRIndexedStringStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIndexedStringStore.h; sourceTree = "<group>"; };
 		BBE6010E19572812004D7542 /* TRIndexedStringStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIndexedStringStore.m; sourceTree = "<group>"; };
 		BBE6011019572D01004D7542 /* TRIndexedStringPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIndexedStringPickerViewController.h; sourceTree = "<group>"; };
@@ -289,6 +293,8 @@
 				BBEEF868192310B0008AA7EF /* InfoPlist.strings */,
 				BBEEF86B192310B0008AA7EF /* main.m */,
 				BBEEF86D192310B0008AA7EF /* troutr-ios-Prefix.pch */,
+				BBA5575219C67815005EAFDF /* configuration.plist.example.plist */,
+				BBA5575419C6790D005EAFDF /* configuration.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -416,7 +422,9 @@
 				BB488DB019295D8600162FFB /* TRCatchTableViewCell.xib in Resources */,
 				BBEEF894192313A7008AA7EF /* TRHomeViewController.xib in Resources */,
 				BB81CE9D192D73740062BCB8 /* TRCamViewController.xib in Resources */,
+				BBA5575519C6790D005EAFDF /* configuration.plist in Resources */,
 				BBEEF8AA19243571008AA7EF /* TRCatchImagePickerViewController.xib in Resources */,
+				BBA5575319C67815005EAFDF /* configuration.plist.example.plist in Resources */,
 				BB81CE8E192C270F0062BCB8 /* TRCameraSessionViewController.xib in Resources */,
 				BBEEF872192310B0008AA7EF /* Images.xcassets in Resources */,
 				BBEEF89919231607008AA7EF /* TRCatchDataEntryViewController.xib in Resources */,

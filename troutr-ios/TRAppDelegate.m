@@ -9,6 +9,7 @@
 #import "TRAppDelegate.h"
 #import "TRHomeViewController.h"
 #import "TRCatchLog.h"
+#import <Parse/Parse.h>
 
 @implementation TRAppDelegate
 
@@ -16,13 +17,22 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
+    NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"configuration" ofType:@"plist"];
+    NSDictionary *configuration = [[NSDictionary alloc] initWithContentsOfFile:plistPath];
+    
+    NSString *parseClientID = configuration[@"ParseCredentials"][@"ClientID"];
+    NSString *parseClientSecret = configuration[@"ParseCredentials"][@"ClientSecret"];
+    
+    [Parse setApplicationId:parseClientID clientKey:parseClientSecret];
+    
+    NSLog(@"parse current user: %@", [PFUser currentUser]);
+    
     TRHomeViewController *homeVC = [[TRHomeViewController alloc] init];
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:homeVC];
     self.window.rootViewController = navVC;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    NSLog(@"there are %lu", (unsigned long)[[TRCatchLog sharedStore].allCatches count]);
     return YES;
 }
 

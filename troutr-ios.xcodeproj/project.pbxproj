@@ -37,6 +37,8 @@
 		BBA5576D19C6827B005EAFDF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBA5576C19C6827B005EAFDF /* SystemConfiguration.framework */; };
 		BBA5577319C68809005EAFDF /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBA5577019C68809005EAFDF /* Bolts.framework */; };
 		BBA5577419C68809005EAFDF /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBA5577119C68809005EAFDF /* Parse.framework */; };
+		BBA5578019C68E4D005EAFDF /* TRAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA5577F19C68E4D005EAFDF /* TRAuthenticationViewController.m */; };
+		BBA5578319C6947B005EAFDF /* TRAuthenticationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA5578219C6947B005EAFDF /* TRAuthenticationView.m */; };
 		BBE6010F19572812004D7542 /* TRIndexedStringStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE6010E19572812004D7542 /* TRIndexedStringStore.m */; };
 		BBE6011219572D01004D7542 /* TRIndexedStringPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE6011119572D01004D7542 /* TRIndexedStringPickerViewController.m */; };
 		BBEAD98C19380E6700395AEB /* TRImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEAD98B19380E6700395AEB /* TRImagePreviewViewController.m */; };
@@ -121,6 +123,10 @@
 		BBA5577819C68889005EAFDF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		BBA5577A19C6889C005EAFDF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		BBA5577C19C688BB005EAFDF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		BBA5577E19C68E4D005EAFDF /* TRAuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAuthenticationViewController.h; sourceTree = "<group>"; };
+		BBA5577F19C68E4D005EAFDF /* TRAuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRAuthenticationViewController.m; sourceTree = "<group>"; };
+		BBA5578119C6947B005EAFDF /* TRAuthenticationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAuthenticationView.h; sourceTree = "<group>"; };
+		BBA5578219C6947B005EAFDF /* TRAuthenticationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRAuthenticationView.m; sourceTree = "<group>"; };
 		BBE6010D19572812004D7542 /* TRIndexedStringStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIndexedStringStore.h; sourceTree = "<group>"; };
 		BBE6010E19572812004D7542 /* TRIndexedStringStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIndexedStringStore.m; sourceTree = "<group>"; };
 		BBE6011019572D01004D7542 /* TRIndexedStringPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIndexedStringPickerViewController.h; sourceTree = "<group>"; };
@@ -228,6 +234,8 @@
 				BBEEF8A719243571008AA7EF /* TRCatchImagePickerViewController.m */,
 				BB81CE99192D73740062BCB8 /* TRCamViewController.h */,
 				BB81CE9A192D73740062BCB8 /* TRCamViewController.m */,
+				BBA5577E19C68E4D005EAFDF /* TRAuthenticationViewController.h */,
+				BBA5577F19C68E4D005EAFDF /* TRAuthenticationViewController.m */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -259,6 +267,8 @@
 			children = (
 				BB81CE9E192D73950062BCB8 /* TRCamPreviewView.h */,
 				BB81CE9F192D73950062BCB8 /* TRCamPreviewView.m */,
+				BBA5578119C6947B005EAFDF /* TRAuthenticationView.h */,
+				BBA5578219C6947B005EAFDF /* TRAuthenticationView.m */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -542,6 +552,7 @@
 				BB81CE9C192D73740062BCB8 /* TRCamViewController.m in Sources */,
 				BBEAD98F193814BF00395AEB /* TRVideoPreviewViewController.m in Sources */,
 				BBEAD98C19380E6700395AEB /* TRImagePreviewViewController.m in Sources */,
+				BBA5578019C68E4D005EAFDF /* TRAuthenticationViewController.m in Sources */,
 				BBEEF89C192316C4008AA7EF /* TRCatch.m in Sources */,
 				BB113DCD19AD5A0300D01BDA /* TRFishSpeciesTableViewController.m in Sources */,
 				BB488DA31929020B00162FFB /* UIImage+ImageEffects.m in Sources */,
@@ -555,6 +566,7 @@
 				BBEEF86C192310B0008AA7EF /* main.m in Sources */,
 				BBE6010F19572812004D7542 /* TRIndexedStringStore.m in Sources */,
 				BBEEF8AD192437FC008AA7EF /* TRImageStore.m in Sources */,
+				BBA5578319C6947B005EAFDF /* TRAuthenticationView.m in Sources */,
 				BB81CEA0192D73950062BCB8 /* TRCamPreviewView.m in Sources */,
 				BB488DAF19295D8600162FFB /* TRCatchTableViewCell.m in Sources */,
 			);

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B6AD9B4C-B59C-4CAA-9860-AA7A4DCFC998</string>
+	<key>IDESourceControlProjectName</key>
+	<string>troutr-ios</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>1D3D4198-D1F7-483D-9223-924356A90190</key>
+		<string>ssh://github.com/worace/troutr-ios.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>troutr-ios.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>1D3D4198-D1F7-483D-9223-924356A90190</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/worace/troutr-ios.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>1D3D4198-D1F7-483D-9223-924356A90190</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1D3D4198-D1F7-483D-9223-924356A90190</string>
+			<key>IDESourceControlWCCName</key>
+			<string>troutr-ios</string>
+		</dict>
+	</array>
+</dict>
+</plist>
